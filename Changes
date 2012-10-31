@@ -2,6 +2,8 @@ Revision history for Perl extension Carp::Assert::More.
 
 1.14
         [FIXES]
+        assert_nonblank() wasn't using the correct message.  Thanks to
+        Leland Johnson.
 
 1.12
         [ENHANCEMENTS]

@@ -176,7 +176,7 @@ sub assert_nonblank($;$) {
     return if $this ne "";
 
     require Carp;
-    &Carp::confess( _fail_msg($_[1]) );
+    &Carp::confess( _fail_msg($name) );
 }
 
 =head1 NUMERIC ASSERTIONS
@@ -610,7 +610,8 @@ Pete Krawczyk,
 David Storrs,
 Dan Friedman,
 Allard Hoeve,
-and Thomas L. Shinnick
+Thomas L. Shinnick,
+and Leland Johnson
 for code and fixes.
 
 =cut

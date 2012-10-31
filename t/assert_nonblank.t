@@ -3,41 +3,23 @@
 use warnings;
 use strict;
 
-use Test::More tests => 6;
+use Test::More tests => 7;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Test::Exception;
 
-local $@;
-$@ = '';
+use Carp::Assert::More;
 
-# 3 is nonblank
-eval {
-    assert_nonblank( 3 );
-};
-is( $@, '' );
+lives_ok( sub { assert_nonblank( 3 ) } );
+lives_ok( sub { assert_nonblank( 0 ) } );
 
-# 0 is nonblank 
-eval {
-    assert_nonblank( 0 );
-};
-is( $@, '' );
+throws_ok( sub { assert_nonblank( '' ) }, qr/Assertion failed!/, q{'' is blank, with no message} );
+throws_ok( sub { assert_nonblank( '', 'flooble' ) }, qr/\QAssertion (flooble) failed!/, q{'' is blank, with message} );
 
-# '' is blank
-eval {
-    assert_nonblank( '' );
-};
-like( $@, qr/Assertion.*failed/ );
+throws_ok( sub { assert_nonblank( undef ) }, qr/Assertion failed!/, q{undef is blank, with no message} );
+throws_ok( sub { assert_nonblank( undef, 'bargle' ) }, qr/\QAssertion (bargle) failed!/, q{undef is blank, with message} );
 
-# undef is not nonblank
-eval {
-    assert_nonblank( undef );
-};
-like( $@, qr/Assertion.*failed/ );
-
-# References are not nonblank
-eval {
+throws_ok( sub {
     my $scalar = "Blah blah";
     my $ref = \$scalar;
-    assert_nonblank( $ref );
-};
-like( $@, qr/Assertion.*failed/ );
+    assert_nonblank( $ref, 'wango' );
+}, qr/\QAssertion (wango) failed!/, 'Testing scalar ref' );
