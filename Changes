@@ -1,6 +1,6 @@
 Revision history for Perl extension Carp::Assert::More.
 
-1.14
+1.14    Wed Oct 31 11:37:04 CDT 2012
         [ENHANCEMENTS]
         Added assert_undefined() for Ben Hengst.
 
