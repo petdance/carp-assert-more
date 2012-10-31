@@ -5,7 +5,10 @@ Revision history for Perl extension Carp::Assert::More.
         assert_nonblank() wasn't using the correct message.  Thanks to
         Leland Johnson.
 
-1.12
+        assert_nonempty() wouldn't work on blessed arrays and refs.
+        Now it will.
+
+1.12    Oct 14 2005
         [ENHANCEMENTS]
         * Added assert_nonnegative() and assert_nonnegative_integer().
         * Added assert_lacks().  Thanks to Bob Diss.

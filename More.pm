@@ -421,11 +421,20 @@ sub assert_nonempty($;$) {
     my $ref = shift;
     my $name = shift;
 
-    my $type = ref $ref;
-    if ( $type eq 'HASH' ) {
+    require Scalar::Util;
+
+    my $underlying_type;
+    if ( Scalar::Util::blessed( $ref ) ) {
+        $underlying_type = Scalar::Util::reftype( $ref );
+    }
+    else {
+        $underlying_type = ref( $ref );
+    }
+
+    if ( $underlying_type eq 'HASH' ) {
         assert_positive( scalar keys %{$ref}, $name );
     }
-    elsif ( $type eq 'ARRAY' ) {
+    elsif ( $underlying_type eq 'ARRAY' ) {
         assert_positive( scalar @{$ref}, $name );
     }
     else {

@@ -3,16 +3,13 @@
 use warnings;
 use strict;
 
-use Test::More tests => 8;
+use Test::More tests => 12;
+use Test::Exception;
 
-BEGIN {
-    use_ok( 'Carp::Assert::More' );
-}
+use Carp::Assert::More;
 
 use constant PASS => 1;
 use constant FAIL => 0;
-
-my $array_object = bless( [], 'WackyPackage' );
 
 my @cases = (
     [ 0         => FAIL ],
@@ -38,3 +35,20 @@ for my $case ( @cases ) {
     }
 }
 
+throws_ok( sub { assert_nonempty( 27 ) }, qr/Not an array or hash reference/ );
+
+BLESSED_ARRAY: {
+    my $array_object = bless( [], 'WackyPackage' );
+    throws_ok( sub { assert_nonempty( $array_object, 'Flooble' ) }, qr/\QAssertion (Flooble) failed!/ );
+
+    push( @{$array_object}, 14 );
+    lives_ok( sub { assert_nonempty( $array_object ) } );
+}
+
+BLESSED_HASH: {
+    my $hash_object = bless( {}, 'WackyPackage' );
+    throws_ok( sub { assert_nonempty( $hash_object, 'Flargle' ) }, qr/\QAssertion (Flargle) failed!/ );
+
+    $hash_object->{foo} = 14;
+    lives_ok( sub { assert_nonempty( $hash_object ) } );
+}
