@@ -1,34 +1,15 @@
-#!perl -Tw
+#!perl -T
 
 use warnings;
 use strict;
 
-use Test::More tests => 5;
+use Test::More tests => 4;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Carp::Assert::More;
 
-local $@;
-$@ = '';
+use Test::Exception;
 
-# 3 is defined
-eval {
-    assert_defined( 3 );
-};
-is( $@, '' );
-
-# 0 is defined (false, but defined)
-eval {
-    assert_defined( 0 );
-};
-is( $@, '' );
-
-# '' is defined (false, but defined)
-eval {
-    assert_defined( 0 );
-};
-is( $@, '' );
-
-eval {
-    assert_defined( undef );
-};
-like( $@, qr/Assertion.*failed/ );
+lives_ok( sub { assert_defined( 3 ); }, '3 is defined' );
+lives_ok( sub { assert_defined( 0 ); }, '0 is false but defined' );
+lives_ok( sub { assert_defined( '' ); }, 'blank is false but defined' );
+throws_ok( sub { assert_defined( undef, 'Flargle' ); }, qr/\QAssertion (Flargle) failed!/, 'undef is not defined' );
