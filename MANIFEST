@@ -31,4 +31,3 @@ t/assert_positive.t
 t/pod.t
 t/pod-coverage.t
 t/test-coverage.t
-META.yml                                 Module meta-data (added by MakeMaker)
