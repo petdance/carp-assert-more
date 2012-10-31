@@ -52,6 +52,8 @@ BEGIN {
 
 =head1 SYNOPSIS
 
+A set of convenience functions for common assertions.
+
     use Carp::Assert::More;
 
     my $obj = My::Object;
@@ -183,8 +185,9 @@ sub assert_nonblank($;$) {
 
 Asserts that I<$this> is an integer, which may be zero or negative.
 
-    assert_integer( 0 );    # pass
-    assert_integer( -14 );  # pass
+    assert_integer( 0 );      # pass
+    assert_integer( 14 );     # pass
+    assert_integer( -14 );    # FAIL
     assert_integer( '14.' );  # FAIL
 
 =cut
@@ -250,8 +253,8 @@ Asserts that the numeric value of I<$this> is greater than or equal
 to zero.  Since non-numeric strings evaluate to zero, this means that
 any non-numeric string will pass.
 
-    assert_nonnegative( 0 );    # pass
-    assert_nonnegative( -14 );  # FAIL
+    assert_nonnegative( 0 );      # pass
+    assert_nonnegative( -14 );    # FAIL
     assert_nonnegative( '14.' );  # pass
     assert_nonnegative( 'dog' );  # pass
 
@@ -294,8 +297,8 @@ sub assert_negative($;$) {
 Asserts that the numeric value of I<$this> is not zero, and that I<$this>
 is an integer.
 
-    assert_nonzero_integer( 0 );    # FAIL
-    assert_nonzero_integer( -14 );  # pass
+    assert_nonzero_integer( 0 );      # FAIL
+    assert_nonzero_integer( -14 );    # pass
     assert_nonzero_integer( '14.' );  # FAIL
 
 =cut
@@ -333,8 +336,8 @@ sub assert_positive_integer($;$) {
 Asserts that the numeric value of I<$this> is not less than zero, and
 that I<$this> is an integer.
 
-    assert_nonnegative_integer( 0 );    # pass
-    assert_nonnegative_integer( -14 );  # pass
+    assert_nonnegative_integer( 0 );      # pass
+    assert_nonnegative_integer( -14 );    # pass
     assert_nonnegative_integer( '14.' );  # FAIL
 
 =cut
@@ -352,8 +355,8 @@ sub assert_nonnegative_integer($;$) {
 Asserts that the numeric value of I<$this> is less than zero, and that
 I<$this> is an integer.
 
-    assert_negative_integer( 0 );    # FAIL
-    assert_negative_integer( -14 );  # pass
+    assert_negative_integer( 0 );      # FAIL
+    assert_negative_integer( -14 );    # pass
     assert_negative_integer( '14.' );  # FAIL
 
 =cut
@@ -606,7 +609,8 @@ Bob Diss,
 Pete Krawczyk,
 David Storrs,
 Dan Friedman,
-and Allard Hoeve
+Allard Hoeve,
+and Thomas L. Shinnick
 for code and fixes.
 
 =cut
