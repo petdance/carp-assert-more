@@ -48,6 +48,7 @@ BEGIN {
         assert_positive
         assert_positive_integer
         assert_undefined
+        assert_unlike
     );
 }
 
@@ -135,6 +136,8 @@ sub assert_isnt($$;$) {
 
 Asserts that I<$string> matches I<qr/regex/>.
 
+The assertion fails either the string or the regex are undef.
+
 =cut
 
 sub assert_like($$;$) {
@@ -145,6 +148,29 @@ sub assert_like($$;$) {
     assert_nonref( $string, $name );
     assert_isa( $regex, 'Regexp', $name );
     return if $string =~ $regex;
+
+    require Carp;
+    &Carp::confess( _fail_msg($name) );
+}
+
+=head2 assert_unlike( $string, qr/regex/ [,$name] )
+
+Asserts that I<$string> matches I<qr/regex/>.
+
+The assertion fails if the regex is undef.
+
+=cut
+
+sub assert_unlike($$;$) {
+    my $string = shift;
+    my $regex  = shift;
+    my $name   = shift;
+
+    return if !defined($string);
+
+    assert_nonref( $string, $name );
+    assert_isa( $regex, 'Regexp', $name );
+    return if $string !~ $regex;
 
     require Carp;
     &Carp::confess( _fail_msg($name) );

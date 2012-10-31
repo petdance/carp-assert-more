@@ -3,57 +3,20 @@
 use warnings;
 use strict;
 
-use Test::More tests => 8;
+use Test::More tests => 7;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Test::Exception;
 
-local $@;
-$@ = '';
+use Carp::Assert::More;
 
-# 'like' is in 'unlikely'
-eval {
-    assert_like('unlikely', qr/like/ );
-};
-is( $@, '' );
-
-# 'te.*st' matches 'tempest'
-eval {
-    my $string = 'tempest';
-    assert_like( $string, qr/te.*st/  );
-};
-is( $@, '' );
-
-# 'qu.*inn' matches 'quality inn'
-eval {
-    my $string = 'quality inn';
-    my $regex = qr/qu.*inn/;
-    assert_like( $string, $regex );
-};
-is( $@, '' );
-
-# 'fa.*il' does not match 'passing'
-eval {
-    assert_like( 'passing', qr/fa.*il/ );
-};
-like( $@, qr/Assertion.*failed/ );
-
-# undef with a regex will fail
-eval {
-    assert_like( undef, qr/fails/ );
-};
-like( $@, qr/Assertion.*failed/ );
-
-# A string without a regex fails, too
-eval {
-    my $string = "Blah blah";
-    assert_like( $string, undef );
-};
-like( $@, qr/Assertion.*failed/ );
-
-# A bad reference should also fail.
-eval {
-    my $string = "Blah blah";
-    my $ref = \$string;
-    assert_like( $string, $ref );
-};
-like( $@, qr/Assertion.*failed/ );
+lives_ok( sub { assert_like('unlikely', qr/like/ ); } );
+lives_ok( sub { assert_like( 'tempest', qr/te.*st/ ); } );
+lives_ok( sub { assert_like( 'quality inn', qr/qu.*inn/ ); } );
+throws_ok( sub { assert_like( 'passing', qr/fa.*il/, 'Flargle' ); }, qr/\QAssertion (Flargle) failed!/ );
+throws_ok( sub { assert_like( undef, qr/anything/, 'Bongo' ); }, qr/\QAssertion (Bongo) failed!/, 'undef string always fails' );
+throws_ok( sub { assert_like( 'Blah blah', undef, 'Bingo' ); }, qr/\QAssertion (Bingo) failed!/, 'undef regex always fails' );
+throws_ok( sub {
+    my $string = 'Blah blah';
+    my $ref    = \$string;
+    assert_like( $string, $ref, 'Dingo' );
+}, qr/\QAssertion (Dingo) failed/, 'bad reference fails' );
