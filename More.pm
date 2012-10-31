@@ -422,14 +422,14 @@ sub assert_nonempty($;$) {
     my $name = shift;
 
     my $type = ref $ref;
-    if ( $type eq "HASH" ) {
-        assert_positive( scalar keys %$ref, $name );
+    if ( $type eq 'HASH' ) {
+        assert_positive( scalar keys %{$ref}, $name );
     }
-    elsif ( $type eq "ARRAY" ) {
-        assert_positive( scalar @$ref, $name );
+    elsif ( $type eq 'ARRAY' ) {
+        assert_positive( scalar @{$ref}, $name );
     }
     else {
-        assert_fail( "Not an array or hash reference" );
+        assert_fail( 'Not an array or hash reference' );
     }
 }
 
