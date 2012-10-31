@@ -9,9 +9,9 @@ package main;
 use warnings;
 use strict;
 
-use Test::More tests => 7;
+use Test::More tests => 6;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Carp::Assert::More;
 
 local $@;
 $@ = '';

@@ -1,4 +1,4 @@
-#!perl -Tw
+#!perl -T
 
 use warnings;
 use strict;
@@ -10,8 +10,8 @@ BEGIN {
 }
 
 my %foo = (
-    name => "Andy Lester",
-    phone => "578-3338",
+    name  => 'Andy Lester',
+    phone => '578-3338',
     wango => undef,
 );
 
@@ -19,13 +19,13 @@ my %foo = (
 eval {
     assert_exists( \%foo, 'name' );
 };
-is( $@, "" );
+is( $@, '' );
 
 
 eval {
     assert_exists( \%foo, 'wango' );
 };
-is( $@, "" );
+is( $@, '' );
 
 
 eval {
@@ -37,7 +37,7 @@ like( $@, qr/Assert.+failed/ );
 eval {
     assert_exists( \%foo, [qw( name )] );
 };
-is( $@, "" );
+is( $@, '' );
 
 eval {
     assert_exists( \%foo, [qw( name social-security-number )] );
@@ -47,12 +47,10 @@ like( $@, qr/Assertion.+failed/ );
 eval {
     assert_exists( \%foo, [qw( name phone )] );
 };
-is( $@, "" );
+is( $@, '' );
 
 
 eval {
     assert_exists( \%foo, ['name','Nonexistent'] );
 };
 like( $@, qr/Assert.+failed/ );
-
-

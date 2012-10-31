@@ -3,9 +3,9 @@
 use warnings;
 use strict;
 
-use Test::More tests => 10;
+use Test::More tests => 9;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Carp::Assert::More;
 
 local $@;
 $@ = '';
@@ -35,7 +35,7 @@ is( $@, '' );
 eval {
     my $string = 'tres';
     my $ref = [ 'uno', 'dos', 'tres', 'quatro' ];
-    assert_in( $string, $ref  );	
+    assert_in( $string, $ref  );
 };
 is( $@, '' );
 
@@ -59,14 +59,14 @@ like( $@, qr/Assertion.*failed/ );
 
 # undef for the arrayref fails
 eval {
-    my $string = "zippo";
+    my $string = 'zippo';
     assert_in( $string, undef );
 };
 like( $@, qr/Assertion.*failed/ );
 
 # A bad reference should also fail.
 eval {
-    my $string = "nil";
+    my $string = 'nil';
     my $ref = \$string;
     assert_in( $string, $ref );
 };

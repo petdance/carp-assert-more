@@ -15,8 +15,8 @@ my @cases = (
     [ 0,        FAIL ],
     [ 0.4,      PASS ],
     [ -10,      FAIL ],
-    [ "dog",    FAIL ],
-    [ "14.",    PASS ],
+    [ 'dog',    FAIL ],
+    [ '14.',    PASS ],
 );
 
 for my $case ( @cases ) {
@@ -27,8 +27,9 @@ for my $case ( @cases ) {
 
     if ( $status eq FAIL ) {
         like( $@, qr/Assertion.+failed/, $desc );
-    } else {
-        is( $@, "", $desc );
+    }
+    else {
+        is( $@, '', $desc );
     }
 }
 

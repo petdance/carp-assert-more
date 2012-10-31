@@ -3,10 +3,10 @@
 use warnings;
 use strict;
 
-use Test::More tests => 5;
-use IO::File; # just for creating objects
+use Test::More tests => 4;
+use Carp::Assert::More;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use IO::File; # just for creating objects
 
 local $@;
 $@ = '';

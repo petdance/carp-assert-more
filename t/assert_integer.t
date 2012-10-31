@@ -3,9 +3,11 @@
 use warnings;
 use strict;
 
-use Test::More tests=>7;
+use Test::More tests => 6;
 
-BEGIN { use_ok( 'Carp::Assert::More' ); }
+use Carp::Assert::More;
+
+use Test::Exception;
 
 use constant PASS => 1;
 use constant FAIL => 2;
@@ -15,8 +17,8 @@ my @cases = (
     [ 0,        PASS ],
     [ 0.4,      FAIL ],
     [ -10,      PASS ],
-    [ "dog",    FAIL ],
-    [ "14.",    FAIL ],
+    [ 'dog',    FAIL ],
+    [ '14.',    FAIL ],
 );
 
 for my $case ( @cases ) {
@@ -26,9 +28,9 @@ for my $case ( @cases ) {
     eval { assert_integer( $val ) };
 
     if ( $status eq FAIL ) {
-        like( $@, qr/Assertion.+failed/, $desc );
-    } else {
-        is( $@, "", $desc );
+        throws_ok( sub { assert_integer( $val ) }, qr/Assertion.+failed/, $desc );
+    }
+    else {
+        lives_ok( sub { assert_integer( $val ) }, $desc );
     }
 }
-

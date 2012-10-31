@@ -3,48 +3,23 @@
 use warnings;
 use strict;
 
-use Test::More tests=>7;
+use Test::More tests => 6;
 
-BEGIN {
-    use_ok( 'Carp::Assert::More' );
-}
+use Carp::Assert::More;
+
+use Test::Exception;
 
 my %foo = (
-    name => "Andy Lester",
-    phone => "578-3338",
+    name  => 'Andy Lester',
+    phone => '578-3338',
     wango => undef,
 );
 
 
-eval {
-    assert_lacks( \%foo, 'Name' );
-};
-is( $@, "" );
-
-
-eval {
-    assert_lacks( \%foo, 'name' );
-};
-like( $@, qr/Assert.+failed/ );
-
-
-eval {
-    assert_lacks( \%foo, [qw( Wango )] );
-};
-is( $@, "" );
-
-eval {
-    assert_lacks( \%foo, [qw( Wango Tango )] );
-};
-is( $@, "" );
-
-eval {
-    assert_lacks( \%foo, [qw( Wango Tango name )] );
-};
-like( $@, qr/Assertion.+failed/ );
-
-eval {
-    assert_lacks( \%foo, [qw()] );
-};
-is( $@, "" );
+lives_ok( sub { assert_lacks( \%foo, 'Name' ) } );
+throws_ok( sub { assert_lacks( \%foo, 'name' ); }, qr/Assert.+failed/ );
+lives_ok( sub { assert_lacks( \%foo, [qw( Wango )] ); } );
+lives_ok( sub { assert_lacks( \%foo, [qw( Wango Tango )] ); } );
+throws_ok( sub { assert_lacks( \%foo, [qw( Wango Tango name )] ); }, qr/Assertion.+failed/ );
+lives_ok( sub { assert_lacks( \%foo, [qw()] ) } );
 
