@@ -47,6 +47,7 @@ BEGIN {
         assert_nonzero_integer
         assert_positive
         assert_positive_integer
+        assert_undefined
     );
 }
 
@@ -157,6 +158,19 @@ Asserts that I<$this> is defined.
 
 sub assert_defined($;$) {
     return if defined( $_[0] );
+
+    require Carp;
+    &Carp::confess( _fail_msg($_[1]) );
+}
+
+=head2 assert_undefined( $this [, $name] )
+
+Asserts that I<$this> is not defined.
+
+=cut
+
+sub assert_undefined($;$) {
+    return unless defined( $_[0] );
 
     require Carp;
     &Carp::confess( _fail_msg($_[1]) );

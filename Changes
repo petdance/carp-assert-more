@@ -1,6 +1,9 @@
 Revision history for Perl extension Carp::Assert::More.
 
 1.14
+        [ENHANCEMENTS]
+        Added assert_undefined() for Ben Hengst.
+
         [FIXES]
         assert_nonblank() wasn't using the correct message.  Thanks to
         Leland Johnson.
