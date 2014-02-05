@@ -1,5 +1,9 @@
 Revision history for Perl extension Carp::Assert::More.
 
+NEXT
+        [DOCUMENTATION]
+        Fixed a goof in the assert_integer() docs.  Thanks, Randy Lauen.
+
 1.14    Wed Oct 31 11:37:04 CDT 2012
         [ENHANCEMENTS]
         Added assert_undefined() for Ben Hengst.

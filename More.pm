@@ -227,7 +227,7 @@ Asserts that I<$this> is an integer, which may be zero or negative.
 
     assert_integer( 0 );      # pass
     assert_integer( 14 );     # pass
-    assert_integer( -14 );    # FAIL
+    assert_integer( -14 );    # pass
     assert_integer( '14.' );  # FAIL
 
 =cut
