@@ -1,9 +1,9 @@
-Changes.md
+Changes
 INSTALL
 MANIFEST
 Makefile.PL
 More.pm
-README
+README.md
 t/00-load.t
 t/assert_defined.t
 t/assert_exists.t
