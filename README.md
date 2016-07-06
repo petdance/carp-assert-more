@@ -4,6 +4,7 @@ Carp::Assert::More is a set of handy assertion functions for Perl.
 
 For example, instead of writing
 
+    assert( defined($foo), '$foo cannot be undefined' );
     assert( $foo ne '', '$foo cannot be blank' );
 
 you can write
