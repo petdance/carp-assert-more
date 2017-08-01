@@ -24,6 +24,7 @@ BEGIN {
     $VERSION = '1.14';
     @ISA = qw(Exporter);
     @EXPORT = qw(
+    	assert_coderef
         assert_defined
         assert_exists
         assert_fail
@@ -542,6 +543,19 @@ sub assert_listref($;$) {
     my $name = shift;
 
     return assert_isa( $ref, 'ARRAY', $name );
+}
+
+=head2 assert_coderef( $ref [,$name] )
+
+Asserts that I<$ref> is defined, and is a reference to a closure.
+
+=cut
+
+sub assert_coderef($;$) {
+    my $ref = shift;
+    my $name = shift;
+
+    return assert_isa( $ref, 'CODE', $name );
 }
 
 =head1 SET AND HASH MEMBERSHIP
