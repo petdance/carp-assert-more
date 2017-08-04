@@ -454,6 +454,8 @@ sub assert_isa_in($$;$) {
     my $types = shift;
     my $name  = shift;
 
+    require Scalar::Util;
+
     my $ok = _any { Scalar::Util::blessed($obj) && $obj->isa($_) } @{$types};
     assert( $ok, $name );
 
