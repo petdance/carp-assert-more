@@ -8,7 +8,7 @@ use Carp::Assert;
 use vars qw( $VERSION @ISA @EXPORT );
 
 *_fail_msg = *Carp::Assert::_fail_msg;
-
+sub _any(&;@);
 
 =head1 NAME
 
@@ -454,9 +454,7 @@ sub assert_isa_in($$;$) {
     my $types = shift;
     my $name  = shift;
 
-    require List::Util;
-
-    my $ok = List::Util::any { Scalar::Util::blessed($obj) && $obj->isa($_) } @{$types};
+    my $ok = _any { Scalar::Util::blessed($obj) && $obj->isa($_) } @{$types};
     assert( $ok, $name );
 
     return;
@@ -727,9 +725,17 @@ sub assert_fail(;$) {
 }
 
 
+# Since List::Util doesn't have any() all the way back.
+sub _any(&;@) {
+    my $sub = shift;
+    $sub->($_) && return 1 for @_;
+    return 0;
+}
+
+
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2012 Andy Lester.
+Copyright 2005-2017 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
@@ -737,6 +743,7 @@ it under the terms of the Artistic License version 2.0.
 =head1 ACKNOWLEDGEMENTS
 
 Thanks to
+Eric A. Zarko,
 Bob Diss,
 Pete Krawczyk,
 David Storrs,
