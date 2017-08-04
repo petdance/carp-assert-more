@@ -5,7 +5,9 @@ Makefile.PL
 More.pm
 README.md
 t/00-load.t
+t/assert_coderef.t
 t/assert_defined.t
+t/assert_empty.t
 t/assert_exists.t
 t/assert_fail.t
 t/assert_hashref.t

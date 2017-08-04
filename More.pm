@@ -24,7 +24,9 @@ BEGIN {
     $VERSION = '1.14';
     @ISA = qw(Exporter);
     @EXPORT = qw(
+    	assert_coderef
         assert_defined
+        assert_empty
         assert_exists
         assert_fail
         assert_hashref
@@ -438,6 +440,50 @@ sub assert_isa($$;$) {
 }
 
 
+=head2 assert_empty( $this [, $name ] )
+
+I<$this> must be a ref to either a hash or an array.  Asserts that that
+collection contains no elements.  Will assert (with its own message,
+not I<$name>) unless given a hash or array ref.   It is OK if I<$this> has
+been blessed into objecthood, but the semantics of checking an object to see
+if it does not have keys (for a hashref) or returns 0 in scalar context (for
+an array ref) may not be what you want.
+
+    assert_empty( 0 );       # FAIL
+    assert_empty( 'foo' );   # FAIL
+    assert_empty( undef );   # FAIL
+    assert_empty( {} );      # pass
+    assert_empty( [] );      # pass
+    assert_empty( {foo=>1} );# FAIL
+    assert_empty( [1,2,3] ); # FAIL
+
+=cut
+
+sub assert_empty($;$) {
+    my $ref = shift;
+    my $name = shift;
+
+    require Scalar::Util;
+
+    my $underlying_type;
+    if ( Scalar::Util::blessed( $ref ) ) {
+        $underlying_type = Scalar::Util::reftype( $ref );
+    }
+    else {
+        $underlying_type = ref( $ref );
+    }
+
+    if ( $underlying_type eq 'HASH' ) {
+        assert_is( scalar keys %{$ref}, 0, $name );
+    }
+    elsif ( $underlying_type eq 'ARRAY' ) {
+        assert_is( scalar @{$ref}, 0, $name );
+    }
+    else {
+        assert_fail( 'Not an array or hash reference' );
+    }
+}
+
 =head2 assert_nonempty( $this [, $name ] )
 
 I<$this> must be a ref to either a hash or an array.  Asserts that that
@@ -542,6 +588,19 @@ sub assert_listref($;$) {
     my $name = shift;
 
     return assert_isa( $ref, 'ARRAY', $name );
+}
+
+=head2 assert_coderef( $ref [,$name] )
+
+Asserts that I<$ref> is defined, and is a reference to a closure.
+
+=cut
+
+sub assert_coderef($;$) {
+    my $ref = shift;
+    my $name = shift;
+
+    return assert_isa( $ref, 'CODE', $name );
 }
 
 =head1 SET AND HASH MEMBERSHIP
