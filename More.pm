@@ -240,6 +240,8 @@ sub assert_numeric {
     my $n    = shift;
     my $name = shift;
 
+    require Scalar::Util;
+
     assert( Scalar::Util::looks_like_number( $n ), $name );
 
     return;
