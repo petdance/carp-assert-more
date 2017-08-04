@@ -24,7 +24,7 @@ BEGIN {
     $VERSION = '1.14';
     @ISA = qw(Exporter);
     @EXPORT = qw(
-    	assert_coderef
+        assert_coderef
         assert_defined
         assert_empty
         assert_exists
@@ -34,6 +34,7 @@ BEGIN {
         assert_integer
         assert_is
         assert_isa
+        assert_isa_in
         assert_isnt
         assert_lacks
         assert_like
@@ -437,6 +438,28 @@ sub assert_isa($$;$) {
 
     require Carp;
     &Carp::confess( _fail_msg($name) );
+}
+
+
+=head2 assert_isa_in( $obj, \@types [, $description] )
+
+Assert that the blessed C<$obj> isa one of the types in C<\@types>.
+
+    assert_isa_in( $obj, [ 'My::Foo', 'My::Bar' ], 'Must pass either a Foo or Bar object' );
+
+=cut
+
+sub assert_isa_in($$;$) {
+    my $obj   = shift;
+    my $types = shift;
+    my $name  = shift;
+
+    require List::Util;
+
+    my $ok = List::Util::any { Scalar::Util::blessed($obj) && $obj->isa($_) } @{$types};
+    assert( $ok, $name );
+
+    return;
 }
 
 

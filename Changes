@@ -3,7 +3,12 @@ Revision history for Perl extension Carp::Assert::More.
 NEXT
 
         [ENHANCEMENTS]
-        Added assert_empty() and assert_coderef().  Thanks, Eric A. Zarko.
+        Added the following functions:
+        * assert_empty()
+        * assert_coderef()
+        * assert_isa_in()
+        Thanks to Eric A. Zarko for some of them.  The rest were migrated
+        from a private code project.
 
         [DOCUMENTATION]
         Fixed a goof in the assert_integer() docs.  Thanks, Randy Lauen.
