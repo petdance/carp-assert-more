@@ -8,6 +8,8 @@ use Carp::Assert;
 use vars qw( $VERSION @ISA @EXPORT );
 
 *_fail_msg = *Carp::Assert::_fail_msg;
+
+*assert_listref = *assert_arrayref;
 sub _any(&;@);
 
 =head1 NAME
@@ -24,6 +26,8 @@ BEGIN {
     $VERSION = '1.14';
     @ISA = qw(Exporter);
     @EXPORT = qw(
+        assert_all_keys_in
+        assert_arrayref
         assert_coderef
         assert_defined
         assert_empty
@@ -596,6 +600,8 @@ sub assert_hashref($;$) {
     return assert_isa( $ref, 'HASH', $name );
 }
 
+=head2 assert_arrayref( $ref [, $name] )
+
 =head2 assert_listref( $ref [,$name] )
 
 Asserts that I<$ref> is defined, and is a reference to a (possibly empty) list.
@@ -604,10 +610,13 @@ B<NB:> The same caveat about objects whose underlying structure is a
 hash (see C<assert_hashref>) applies here; this method returns false
 even for objects whose underlying structure is an array.
 
+C<assert_listref> is an alias for C<assert_arrayref> and may go away in
+the future.  Use C<assert_arrayref> instead.
+
 =cut
 
-sub assert_listref($;$) {
-    my $ref = shift;
+sub assert_arrayref($;$) {
+    my $ref  = shift;
     my $name = shift;
 
     return assert_isa( $ref, 'ARRAY', $name );
@@ -710,6 +719,34 @@ sub assert_lacks($$;$) {
         }
     }
 }
+
+
+=head2 assert_all_keys_in( \%hash, \@names [, $name ] )
+
+Asserts that each key in C<%hash> is in the list of C<@names>.
+
+This is used to ensure that there are no extra keys in a given hash.
+
+    assert_all_keys_in( $obj, [qw( height width depth )], '$obj can only contain height, width and depth keys' );
+
+=cut
+
+sub assert_all_keys_in {
+    my $hash       = shift;
+    my $valid_keys = shift;
+    my $name       = shift;
+
+    assert_hashref( $hash );
+    assert_listref( $valid_keys );
+
+    foreach my $key ( keys %{$hash} ) {
+        assert_in( $key, $valid_keys, $name );
+    }
+
+    return;
+}
+
+
 
 =head1 UTILITY ASSERTIONS
 

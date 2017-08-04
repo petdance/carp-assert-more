@@ -4,11 +4,16 @@ NEXT
 
         [ENHANCEMENTS]
         Added the following functions:
-        * assert_empty()
-        * assert_coderef()
-        * assert_isa_in()
+        * assert_all_keys_in( \%hash, \@keylist )
+        * assert_empty( [\%hash|\@list] )
+        * assert_coderef( $ref )
+        * assert_isa_in( $ref, \@class_list )
         Thanks to Eric A. Zarko for some of them.  The rest were migrated
         from a private code project.
+
+        Renamed assert_listref() to assert_arrayref(), but keep
+        assert_listref() as backward compatibility.  assert_listref()
+        may go away in the future.
 
         [DOCUMENTATION]
         Fixed a goof in the assert_integer() docs.  Thanks, Randy Lauen.
