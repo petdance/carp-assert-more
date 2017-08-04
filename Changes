@@ -1,9 +1,9 @@
 Revision history for Perl extension Carp::Assert::More.
 
-NEXT
-
+1.16    Fri Aug  4 13:37:51 CDT 2017
         [ENHANCEMENTS]
         Added the following functions:
+        * assert_numeric( $n )
         * assert_all_keys_in( \%hash, \@keylist )
         * assert_empty( [\%hash|\@list] )
         * assert_coderef( $ref )

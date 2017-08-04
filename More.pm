@@ -52,6 +52,7 @@ BEGIN {
         assert_nonref
         assert_nonzero
         assert_nonzero_integer
+        assert_numeric
         assert_positive
         assert_positive_integer
         assert_undefined
@@ -226,7 +227,24 @@ sub assert_nonblank($;$) {
     &Carp::confess( _fail_msg($name) );
 }
 
+
 =head1 NUMERIC ASSERTIONS
+
+=head2 assert_numeric( $n [, $name] )
+
+Asserts that C<$n> looks like a number, according to C<Scalar::Util::looks_like_number>.
+
+=cut
+
+sub assert_numeric {
+    my $n    = shift;
+    my $name = shift;
+
+    assert( Scalar::Util::looks_like_number( $n ), $name );
+
+    return;
+}
+
 
 =head2 assert_integer( $this [, $name ] )
 

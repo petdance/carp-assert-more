@@ -1,6 +1,6 @@
 #!perl -Tw
 
-use Test::More tests => 31;
+use Test::More tests => 32;
 
 use Carp::Assert::More;
 

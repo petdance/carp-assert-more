@@ -31,6 +31,7 @@ t/assert_nonnegative.t
 t/assert_nonref.t
 t/assert_nonzero_integer.t
 t/assert_nonzero.t
+t/assert_numeric.t
 t/assert_positive_integer.t
 t/assert_positive.t
 t/assert_undefined.t
