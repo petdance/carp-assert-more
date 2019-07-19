@@ -24,6 +24,7 @@ BEGIN {
     @ISA = qw(Exporter);
     @EXPORT = qw(
         assert_all_keys_in
+        assert_aoh
         assert_arrayref
         assert_coderef
         assert_defined
@@ -639,6 +640,28 @@ sub assert_arrayref($;$) {
     return assert_isa( $ref, 'ARRAY', $name );
 }
 *assert_listref = *assert_arrayref;
+
+
+=head2 assert_aoh( $ref [, $name ] )
+
+Verifies that C<$array> is an arrayref, and that every element is a hashref.
+
+The array C<$array> can be an empty arraref and the assertion will pass.
+
+=cut
+
+sub assert_aoh {
+    my $array = shift;
+    my $msg   = shift // 'Is an array of hashes';
+
+    assert_arrayref( $array, "$msg: Is an array" );
+    while ( my ($i,$val) = each @{$array} ) {
+        assert_hashref( $val, "$msg: Element $i is a hash" );
+    }
+
+    return;
+}
+
 
 =head2 assert_coderef( $ref [,$name] )
 
