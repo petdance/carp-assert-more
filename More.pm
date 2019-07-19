@@ -652,7 +652,9 @@ The array C<$array> can be an empty arraref and the assertion will pass.
 
 sub assert_aoh {
     my $array = shift;
-    my $msg   = shift // 'Is an array of hashes';
+    my $msg   = shift;
+
+    $msg = 'Is an array of hashes' unless defined($msg);
 
     assert_arrayref( $array, "$msg: Is an array" );
     my $i = 0;
