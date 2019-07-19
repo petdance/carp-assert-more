@@ -655,8 +655,10 @@ sub assert_aoh {
     my $msg   = shift // 'Is an array of hashes';
 
     assert_arrayref( $array, "$msg: Is an array" );
-    while ( my ($i,$val) = each @{$array} ) {
+    my $i = 0;
+    for my $val ( @{$array} ) {
         assert_hashref( $val, "$msg: Element $i is a hash" );
+        ++$i;
     }
 
     return;
