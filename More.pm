@@ -815,7 +815,7 @@ sub _any(&;@) {
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2017 Andy Lester.
+Copyright 2005-2019 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
