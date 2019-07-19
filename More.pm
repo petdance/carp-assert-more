@@ -15,12 +15,12 @@ Carp::Assert::More - convenience wrappers around Carp::Assert
 
 =head1 VERSION
 
-Version 1.16
+Version 1.18
 
 =cut
 
 BEGIN {
-    $VERSION = '1.16';
+    $VERSION = '1.18';
     @ISA = qw(Exporter);
     @EXPORT = qw(
         assert_all_keys_in

@@ -1,6 +1,6 @@
 Revision history for Perl extension Carp::Assert::More.
 
-NEXT
+1.18    Fri Jul 19 17:12:32 CDT 2019
         [ENHANCEMENTS]
         Added assert_aoh() for asserting an array of hashrefs.
 
