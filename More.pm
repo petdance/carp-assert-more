@@ -690,7 +690,7 @@ Asserts that C<$date> is a DateTime object.
 
 =cut
 
-sub assert_datetime {
+sub assert_datetime($;$) {
     my $datetime = shift;
     my $desc     = shift // 'Must be a DateTime object';
 
@@ -859,4 +859,4 @@ for code and fixes.
 
 =cut
 
-"I stood on the porch in a tie."
+1;
