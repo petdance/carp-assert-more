@@ -802,7 +802,7 @@ sub assert_all_keys_in {
     my $name       = shift;
 
     assert_hashref( $hash );
-    assert_listref( $valid_keys );
+    assert_arrayref( $valid_keys );
 
     foreach my $key ( keys %{$hash} ) {
         assert_in( $key, $valid_keys, $name );
