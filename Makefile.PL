@@ -1,6 +1,6 @@
 package main;
 
-use 5.010;
+use 5.006001;
 
 use strict;
 use warnings;
@@ -14,8 +14,7 @@ my %parms = (
         'More.pm'       => '$(INST_LIB)/Carp/Assert/More.pm',
     },
 
-    MIN_PERL_VERSION    => 5.010001,
-    PREREQ_PM           => {
+    PREREQ_PM   => {
         Carp                => 0,
         'Carp::Assert'      => 0,
         'Scalar::Util'      => 0,
