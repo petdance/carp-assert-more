@@ -39,6 +39,7 @@ BEGIN {
         assert_isa
         assert_isa_in
         assert_isnt
+        assert_keys_are
         assert_lacks
         assert_like
         assert_listref
@@ -796,7 +797,7 @@ This is used to ensure that there are no extra keys in a given hash.
 
 =cut
 
-sub assert_all_keys_in {
+sub assert_all_keys_in($$;$) {
     my $hash       = shift;
     my $valid_keys = shift;
     my $name       = shift;
@@ -811,6 +812,29 @@ sub assert_all_keys_in {
     return;
 }
 
+
+=head2 assert_keys_are( \%hash, \@keys [, $name ] )
+
+Asserts that the keys for C<%hash> are exactly C<@keys>, no more and no less.
+
+=cut
+
+sub assert_keys_are($$;$) {
+    my $hash       = shift;
+    my $valid_keys = shift;
+    my $name       = shift;
+
+    assert_hashref( $hash );
+    assert_arrayref( $valid_keys );
+
+    foreach my $key ( keys %{$hash} ) {
+        assert_in( $key, $valid_keys, $name );
+    }
+
+    assert_is(scalar keys %{$hash}, scalar @{$valid_keys}, 'There are the correct number of keys');
+
+    return;
+}
 
 
 =head1 UTILITY ASSERTIONS
