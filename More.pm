@@ -693,7 +693,9 @@ Asserts that C<$date> is a DateTime object.
 
 sub assert_datetime($;$) {
     my $datetime = shift;
-    my $desc     = shift // 'Must be a DateTime object';
+    my $desc     = shift;
+
+    $desc = 'Must be a DateTime object' unless defined($desc);
 
     assert_isa( $datetime, 'DateTime', $desc );
 
