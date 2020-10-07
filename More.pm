@@ -15,12 +15,12 @@ Carp::Assert::More - convenience wrappers around Carp::Assert
 
 =head1 VERSION
 
-Version 1.20
+Version 1.22
 
 =cut
 
 BEGIN {
-    $VERSION = '1.20';
+    $VERSION = '1.22';
     @ISA = qw(Exporter);
     @EXPORT = qw(
         assert_all_keys_in
@@ -863,7 +863,7 @@ sub _any(&;@) {
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2019 Andy Lester.
+Copyright 2005-2020 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
