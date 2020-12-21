@@ -1,8 +1,6 @@
 # Carp::Assert::More
 
-* dev branch:
-
-![Build Status](https://github.com/petdance/carp-assert-more/workflows/testsuite/badge.svg?branch=dev)
+[![Build Status](https://github.com/petdance/carp-assert-more/workflows/testsuite/badge.svg?branch=dev)](https://github.com/petdance/carp-assert-more/actions?query=workflow%3Atestsuite+branch%3Adev)
 
 # NAME
 
