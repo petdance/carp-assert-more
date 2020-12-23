@@ -23,9 +23,10 @@ jobs:
       - name: perl -V
         run: perl -V
       - name: Install Dependencies
-        uses: perl-actions/install-with-cpm@v1
+        uses: perl-actions/install-with-cpanm@v1
         with:
-          cpanfile: "cpanfile"
+          sudo: false
+          args: "--installdeps ."
       - name: Makefile.PL
         run: perl -I$(pwd) Makefile.PL
       - name: make test
@@ -69,10 +70,10 @@ jobs:
       - name: perl -V
         run: perl -V
       - name: Install Dependencies
-        uses: perl-actions/install-with-cpm@v1
+        uses: perl-actions/install-with-cpanm@v1
         with:
           sudo: false
-          cpanfile: "cpanfile"
+          args: "--installdeps ."
       - run: perl Makefile.PL
       - run: make
       - run: make test
@@ -95,10 +96,10 @@ jobs:
       - name: perl -V
         run: perl -V
       - name: Install Dependencies
-        uses: perl-actions/install-with-cpm@v1
+        uses: perl-actions/install-with-cpanm@v1
         with:
           sudo: false
-          cpanfile: "cpanfile"
+          args: "--installdeps ."
       - run: perl Makefile.PL
       - run: make
       - run: make test
@@ -116,10 +117,9 @@ jobs:
       - name: perl -V
         run: perl -V
       - name: Install Dependencies
-        uses: perl-actions/install-with-cpm@v1
+        uses: perl-actions/install-with-cpanm@v1
         with:
-          sudo: false
-          cpanfile: "cpanfile"
+          args: "--installdeps ."
       - name: perl Makefile.PL
         run: perl Makefile.PL
       - name: make
