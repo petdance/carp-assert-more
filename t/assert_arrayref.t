@@ -13,52 +13,33 @@ use Test::More tests => 7;
 
 use Carp::Assert::More;
 
-local $@;
-$@ = '';
+use Test::Exception;
+
+my $FAILED = qr/Assertion failed/;
 
 # {} is not an arrayref.
-eval {
-    assert_arrayref( {} );
-};
-like( $@, qr/Assertion.*failed/ );
+throws_ok( sub { assert_arrayref( {} ) }, $FAILED );
 
 # A ref to a hash with stuff in it is not an arrayref.
 my $ref = { foo => 'foo', bar => 'bar' };
-eval {
-    assert_arrayref( $ref );
-};
-like( $@, qr/Assertion.*failed/ );
+throws_ok( sub { assert_arrayref( $ref ) }, $FAILED );
 
 # 3 is not an arrayref.
-eval {
-    assert_arrayref( 3 );
-};
-like( $@, qr/Assertion.*failed/ );
+throws_ok( sub { assert_arrayref( 3 ) }, $FAILED );
 
 # [] is an arrayref.
-eval {
-    assert_arrayref( [] );
-};
-is( $@, '' );
+lives_ok( sub { [] } );
 
 # A ref to a list with stuff in it is an arrayref.
 my @ary = ('foo', 'bar', 'baaz');
-eval {
-    assert_arrayref( \@ary );
-};
-is( $@, '' );
+lives_ok( sub { assert_arrayref( \@ary ) } );
 
-# Sub {} is not an arrayref.
-eval {
-    assert_arrayref( sub {} );
-};
-like( $@, qr/Assertion.*failed/ );
+# A coderef is not an arrayref.
+my $coderef = sub {};
+throws_ok( sub { assert_arrayref( $coderef ) }, $FAILED );
 
 # Foo->new->isa("ARRAY") returns true, so do we
-eval {
-    assert_arrayref( Foo->new );
-};
-is( $@, '' );
+lives_ok( sub { assert_arrayref( Foo->new ) } );
 
 done_testing();
 exit 0;
