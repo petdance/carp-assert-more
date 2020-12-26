@@ -8,7 +8,7 @@ Carp::Assert::More - convenience wrappers around Carp::Assert
 
 # VERSION
 
-Version 1.20
+Version 1.26
 
 # SYNOPSIS
 
@@ -21,7 +21,7 @@ A set of convenience functions for common assertions.
 
 # DESCRIPTION
 
-Carp::Assert::More is a set of wrappers around the [Carp::Assert](https://metacpan.org/pod/Carp::Assert) functions
+Carp::Assert::More is a set of wrappers around the [Carp::Assert](https://metacpan.org/pod/Carp%3A%3AAssert) functions
 to make the habit of writing assertions even easier.
 
 Everything in here is effectively syntactic sugar.  There's no technical
@@ -234,11 +234,17 @@ data is a hashref. This is as it should be, under the assumptions that:
 
     you should use `assert_isa` instead.
 
+## assert\_hashref\_nonempty( $ref \[,$name\] )
+
+Asserts that _$ref_ is defined and is a reference to a hash with at
+least one key/value pair.
+
 ## assert\_arrayref( $ref \[, $name\] )
 
 ## assert\_listref( $ref \[,$name\] )
 
-Asserts that _$ref_ is defined, and is a reference to a (possibly empty) list.
+Asserts that _$ref_ is defined, and is a reference to an array, which
+may or may not be empty.
 
 **NB:** The same caveat about objects whose underlying structure is a
 hash (see `assert_hashref`) applies here; this method returns false
@@ -246,6 +252,10 @@ even for objects whose underlying structure is an array.
 
 `assert_listref` is an alias for `assert_arrayref` and may go away in
 the future.  Use `assert_arrayref` instead.
+
+## assert\_arrayref\_nonempty( $ref \[, $name\] )
+
+Asserts that _$ref_ is reference to an array that has at least one element in it.
 
 ## assert\_aoh( $ref \[, $name \] )
 
@@ -303,6 +313,10 @@ This is used to ensure that there are no extra keys in a given hash.
 
     assert_all_keys_in( $obj, [qw( height width depth )], '$obj can only contain height, width and depth keys' );
 
+## assert\_keys\_are( \\%hash, \\@keys \[, $name \] )
+
+Asserts that the keys for `%hash` are exactly `@keys`, no more and no less.
+
 # UTILITY ASSERTIONS
 
 ## assert\_fail( \[$name\] )
@@ -313,7 +327,7 @@ accidentally use `assert($msg)`, which of course never fires.
 
 # COPYRIGHT & LICENSE
 
-Copyright 2005-2019 Andy Lester.
+Copyright 2005-2020 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
