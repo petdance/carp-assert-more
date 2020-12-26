@@ -7,6 +7,8 @@ use Test::More tests => 7;
 
 use Carp::Assert::More;
 
+use Test::Exception;
+
 use constant PASS => 1;
 use constant FAIL => 2;
 
@@ -21,15 +23,15 @@ my @cases = (
 );
 
 for my $case ( @cases ) {
-    my ($val,$status) = @$case;
+    my ($val,$status) = @{$case};
 
     my $desc = "Checking \"$val\"";
-    eval { assert_positive_integer( $val ) };
 
     if ( $status eq FAIL ) {
-        like( $@, qr/Assertion.+failed/, $desc );
-    } else {
-        is( $@, '', $desc );
+        throws_ok( sub { assert_positive_integer( $val ) }, qr/Assertion failed/, $desc );
+    }
+    else {
+        lives_ok( sub { assert_positive_integer( $val ) }, $desc );
     }
 }
 
