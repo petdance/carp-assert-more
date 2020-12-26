@@ -19,8 +19,11 @@ allow_leading_tabs = 0
 [-RegularExpressions::RequireExtendedFormatting]
 [-RegularExpressions::RequireLineBoundaryMatching]
 
+[-TestingAndDebugging::RequireTestLabels]
+
 [-ValuesAndExpressions::ProhibitConstantPragma]
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
+[-ValuesAndExpressions::ProhibitMagicNumbers]
 [-ValuesAndExpressions::ProhibitNoisyQuotes]
 
 [-Variables::ProhibitPunctuationVars]
