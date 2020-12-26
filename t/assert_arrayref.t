@@ -1,7 +1,5 @@
 #!perl -Tw
 
-# This is cut & paste of assert_arrayref.t
-
 package Foo;
 
 sub new { my $class = shift; return bless [@_], $class; }
@@ -18,39 +16,39 @@ use Carp::Assert::More;
 local $@;
 $@ = '';
 
-# {} is not a listref
+# {} is not an arrayref.
 eval {
     assert_arrayref( {} );
 };
 like( $@, qr/Assertion.*failed/ );
 
-# a ref to a hash with stuff in it is not a listref
+# A ref to a hash with stuff in it is not an arrayref.
 my $ref = { foo => 'foo', bar => 'bar' };
 eval {
     assert_arrayref( $ref );
 };
 like( $@, qr/Assertion.*failed/ );
 
-# 3 is not a listref
+# 3 is not an arrayref.
 eval {
     assert_arrayref( 3 );
 };
 like( $@, qr/Assertion.*failed/ );
 
-# [] is a listref
+# [] is an arrayref.
 eval {
     assert_arrayref( [] );
 };
 is( $@, '' );
 
-# a ref to a list with stuff in it is a listref
+# A ref to a list with stuff in it is an arrayref.
 my @ary = ('foo', 'bar', 'baaz');
 eval {
     assert_arrayref( \@ary );
 };
 is( $@, '' );
 
-# sub {} is not a listref
+# Sub {} is not an arrayref.
 eval {
     assert_arrayref( sub {} );
 };
