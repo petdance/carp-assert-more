@@ -406,7 +406,7 @@ Asserts that the numeric value of I<$this> is not less than zero, and
 that I<$this> is an integer.
 
     assert_nonnegative_integer( 0 );      # pass
-    assert_nonnegative_integer( -14 );    # pass
+    assert_nonnegative_integer( -14 );    # FAIL
     assert_nonnegative_integer( '14.' );  # FAIL
 
 =cut
