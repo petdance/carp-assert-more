@@ -16,12 +16,12 @@ Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
-Version 2.0.0
+Version 2.0.1
 
 =cut
 
 BEGIN {
-    $VERSION = '2.0.0';
+    $VERSION = '2.0.1';
     @ISA = qw(Exporter);
     @EXPORT = qw(
         assert_all_keys_in
@@ -953,6 +953,8 @@ This is used to ensure that there are no extra keys in a given hash.
 
     assert_all_keys_in( $obj, [qw( height width depth )], '$obj can only contain height, width and depth keys' );
 
+You can pass an empty list of C<@names>.
+
 =cut
 
 sub assert_all_keys_in($$;$) {
@@ -962,7 +964,7 @@ sub assert_all_keys_in($$;$) {
 
     my $ok = 0;
     if ( ref($hash) eq 'HASH' || (Scalar::Util::blessed( $hash ) && $hash->isa( 'HASH' )) ) {
-        if ( ref($keys) eq 'ARRAY' && (@{$keys} > 0) ) {
+        if ( ref($keys) eq 'ARRAY' ) {
             $ok = 1;
             my %keys = map { $_ => 1 } @{$keys};
             for my $key ( keys %{$hash} ) {
