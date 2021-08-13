@@ -6,7 +6,7 @@ NEXT
         keys to check.
 
         [ENHANCEMENTS]
-        Sped up assert_isa_in().
+        Sped up assert_isa_in(), assert_is().
 
 
 2.0.0   Thu Aug 12 23:00::00 CST 2021

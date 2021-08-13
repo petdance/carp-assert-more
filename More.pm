@@ -107,10 +107,12 @@ sub assert_is($$;$) {
     my $match = shift;
     my $name = shift;
 
-    # undef only matches undef
-    return if !defined($string) && !defined($match);
-
-    return if defined($string) && defined($match) && ($string eq $match);
+    if ( defined($string) ) {
+        return if defined($match) && ($string eq $match);
+    }
+    else {
+        return if !defined($match);
+    }
 
     require Carp;
     &Carp::confess( _fail_msg($name) );
