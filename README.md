@@ -4,7 +4,7 @@
 
 # NAME
 
-Carp::Assert::More - convenience wrappers around Carp::Assert
+Carp::Assert::More - Convenience assertions for common situations
 
 # VERSION
 
@@ -21,20 +21,22 @@ A set of convenience functions for common assertions.
 
 # DESCRIPTION
 
-Carp::Assert::More is a set of wrappers around the [Carp::Assert](https://metacpan.org/pod/Carp%3A%3AAssert) functions
-to make the habit of writing assertions even easier.
+Carp::Assert::More is a convenient set of assertions to make the habit
+of writing assertions even easier.
 
 Everything in here is effectively syntactic sugar.  There's no technical
-reason to use
+difference between calling
 
-    assert_isa( $foo, 'HTML::Lint' );
+    assert_isa( $foo, 'DateTime' );
 
-instead of
+or
+    assert_datetime( $foo );
+
+that are provided by Carp::Assert::More and calling these assertions
+from Carp::Assert
 
     assert( defined $foo );
-    assert( ref($foo) eq 'HTML::Lint' );
-
-other than readability and simplicity of the code.
+    assert( ref($foo) eq 'DateTime' );
 
 My intent here is to make common assertions easy so that we as programmers
 have no excuse to not use them.
