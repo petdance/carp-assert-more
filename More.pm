@@ -29,6 +29,8 @@ BEGIN {
         assert_arrayref
         assert_arrayref_nonempty
         assert_coderef
+        assert_context_nonvoid
+        assert_context_scalar
         assert_datetime
         assert_defined
         assert_empty
@@ -1001,6 +1003,86 @@ sub assert_keys_are($$;$) {
     }
 
     return if $ok;
+
+    require Carp;
+    &Carp::confess( _fail_msg($name) );
+}
+
+
+=head1 CONTEXT ASSERTIONS
+
+=head2 assert_context_nonvoid( [$name] )
+
+Verifies that the function currently being executed has not been called
+in void context.  This is to ensure the calling function is not ignoring
+the return value of the executing function.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return $important_value;
+    }
+
+These calls to C<something> will pass:
+
+    my $val = something();
+    my @things = something();
+
+but this will fail:
+
+    something();
+
+=cut
+
+sub assert_context_nonvoid(;$) {
+    my $name = shift;
+
+    my $wantarray = (caller(1))[5];
+
+    return if defined($wantarray);
+
+    require Carp;
+    &Carp::confess( _fail_msg($name) );
+}
+
+
+=head2 assert_context_scalar( [$name] )
+
+Verifies that the function currently being executed has been called in
+scalar context.  This is to ensure the calling function is not ignoring
+the return value of the executing function.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return $important_value;
+    }
+
+This call to C<something> will pass:
+
+    my $val = something();
+
+but these will fail:
+
+    something();
+    my @things = something();
+
+=cut
+
+sub assert_context_scalar(;$) {
+    my $name = shift;
+
+    my $wantarray = (caller(1))[5];
+
+    return if defined($wantarray) && $wantarray eq '';
 
     require Carp;
     &Carp::confess( _fail_msg($name) );
