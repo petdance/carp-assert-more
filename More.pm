@@ -82,12 +82,10 @@ Carp::Assert::More is a convenient set of assertions to make the habit
 of writing assertions even easier.
 
 Everything in here is effectively syntactic sugar.  There's no technical
-difference between calling
+difference between calling one of these functions:
 
-    assert_isa( $foo, 'DateTime' );
-
-or
     assert_datetime( $foo );
+    assert_isa( $foo, 'DateTime' );
 
 that are provided by Carp::Assert::More and calling these assertions
 from Carp::Assert
