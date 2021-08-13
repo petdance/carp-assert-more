@@ -544,7 +544,7 @@ sub assert_empty($;$) {
         return if scalar keys %{$ref} == 0;
     }
     elsif ( $underlying_type eq 'ARRAY' ) {
-        return if scalar keys @{$ref} == 0;
+        return if @{$ref} == 0;
     }
 
     require Carp;
