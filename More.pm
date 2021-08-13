@@ -1092,7 +1092,7 @@ sub assert_context_scalar(;$) {
 
     my $wantarray = (caller(1))[5];
 
-    return if defined($wantarray) && $wantarray eq '';
+    return if defined($wantarray) && !$wantarray;
 
     require Carp;
     &Carp::confess( _fail_msg($name) );
