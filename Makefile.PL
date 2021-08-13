@@ -1,6 +1,6 @@
 package main;
 
-use 5.006001;
+use 5.10.0;
 
 use strict;
 use warnings;
@@ -49,10 +49,17 @@ package MY;
 
 sub MY::postamble {
     my $postamble = <<'MAKE_FRAG';
-.PHONY: critic
+.PHONY: critic tags
 
 critic:
 	perlcritic -1 -q -profile perlcriticrc More.pm t/*.t
+
+tags:
+	ctags -f tags --recurse --totals \
+		--exclude=blib \
+		--exclude=.git \
+		--exclude='*~' \
+		--languages=Perl --langmap=Perl:+.t \
 
 MAKE_FRAG
 

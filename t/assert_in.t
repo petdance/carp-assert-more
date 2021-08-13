@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 9;
+use Test::More tests => 11;
 
 use Carp::Assert::More;
 
@@ -45,7 +45,19 @@ eval {
 };
 like( $@, qr/Assertion.*failed/ );
 
-# undef string fa6yyils
+# undefs in the list fails
+eval {
+    assert_in( 'C', [ 'A', 'B', 'C', undef ] );
+};
+like( $@, qr/Assertion.*failed/ );
+
+# refs in the list fails
+eval {
+    assert_in( 'C', [ 'A', 'B', 'C', {} ] );
+};
+like( $@, qr/Assertion.*failed/ );
+
+# undef string fails
 eval {
     assert_in( undef, [ 'fail' ] );
 };

@@ -327,7 +327,7 @@ accidentally use `assert($msg)`, which of course never fires.
 
 # COPYRIGHT & LICENSE
 
-Copyright 2005-2020 Andy Lester.
+Copyright 2005-2021 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
