@@ -2,8 +2,8 @@ package Carp::Assert::More;
 
 use warnings;
 use strict;
+
 use Exporter;
-use Carp::Assert;
 use Scalar::Util;
 
 use vars qw( $VERSION @ISA @EXPORT );
@@ -12,7 +12,7 @@ sub _any(&;@);
 
 =head1 NAME
 
-Carp::Assert::More - convenience wrappers around Carp::Assert
+Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
@@ -76,20 +76,22 @@ A set of convenience functions for common assertions.
 
 =head1 DESCRIPTION
 
-Carp::Assert::More is a set of wrappers around the L<Carp::Assert> functions
-to make the habit of writing assertions even easier.
+Carp::Assert::More is a convenient set of assertions to make the habit
+of writing assertions even easier.
 
 Everything in here is effectively syntactic sugar.  There's no technical
-reason to use
+difference between calling
 
-    assert_isa( $foo, 'HTML::Lint' );
+    assert_isa( $foo, 'DateTime' );
 
-instead of
+or
+    assert_datetime( $foo );
+
+that are provided by Carp::Assert::More and calling these assertions
+from Carp::Assert
 
     assert( defined $foo );
-    assert( ref($foo) eq 'HTML::Lint' );
-
-other than readability and simplicity of the code.
+    assert( ref($foo) eq 'DateTime' );
 
 My intent here is to make common assertions easy so that we as programmers
 have no excuse to not use them.
@@ -245,9 +247,10 @@ sub assert_numeric {
     my $n    = shift;
     my $name = shift;
 
-    assert( Scalar::Util::looks_like_number( $n ), $name );
+    return if Scalar::Util::looks_like_number( $n );
 
-    return;
+    require Carp;
+    &Carp::confess( _fail_msg($name) );
 }
 
 
