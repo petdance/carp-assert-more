@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 11;
+use Test::More tests => 12;
 
 use Carp::Assert::More;
 
@@ -45,11 +45,17 @@ eval {
 };
 like( $@, qr/Assertion.*failed/ );
 
-# undefs in the list fails
+# undef in the list is OK
 eval {
     assert_in( 'C', [ 'A', 'B', 'C', undef ] );
 };
-like( $@, qr/Assertion.*failed/ );
+is( $@, '' );
+
+# undef is an OK value to match against the list.
+eval {
+    assert_in( undef, [ 'A', 'B', 'C', undef ] );
+};
+is( $@, '' );
 
 # refs in the list fails
 eval {

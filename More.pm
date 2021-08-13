@@ -792,31 +792,31 @@ sub assert_datetime($;$) {
 
 =head2 assert_in( $string, \@inlist [,$name] );
 
-Asserts that I<$string> is defined and matches one of the elements
-of I<\@inlist>.
+Asserts that I<$string> matches one of the elements of I<\@inlist>.
+I<$string> may be undef.
 
-I<\@inlist> must be an array reference of defined strings.  If any
-element is undef or a reference, the assertion fails.
+I<\@inlist> must be an array reference of non-ref strings.  If any
+element is a reference, the assertion fails.
 
 =cut
 
 sub assert_in($$;$) {
-    my $string = shift;
-    my $arrayref = shift;
+    my $needle = shift;
+    my $haystack = shift;
     my $name = shift;
 
     my $found = 0;
 
-    # String has to be a non-ref string.
-    if ( defined($string) && !ref($string) ) {
+    # String has to be a non-ref scalar, or undef.
+    if ( !ref($needle) ) {
 
         # Target list has to be an array...
-        if ( ref($arrayref) eq 'ARRAY' || (Scalar::Util::blessed( $arrayref ) && $arrayref->isa( 'ARRAY' )) ) {
+        if ( ref($haystack) eq 'ARRAY' || (Scalar::Util::blessed( $haystack ) && $haystack->isa( 'ARRAY' )) ) {
 
-            # ... and all elements have to be defined and non-refs.
+            # ... and all elements have to be non-refs.
             my $elements_ok = 1;
-            foreach my $element (@{$arrayref}) {
-                if ( !defined($element) || ref($element) ) {
+            foreach my $element (@{$haystack}) {
+                if ( ref($element) ) {
                     $elements_ok = 0;
                     last;
                 }
@@ -824,10 +824,20 @@ sub assert_in($$;$) {
 
             # Now we can actually do the search.
             if ( $elements_ok ) {
-                foreach my $element (@{$arrayref}) {
-                    if ( $string eq $element ) {
-                        $found = 1;
-                        last;
+                if ( defined($needle) ) {
+                    foreach my $element (@{$haystack}) {
+                        if ( $needle eq $element ) {
+                            $found = 1;
+                            last;
+                        }
+                    }
+                }
+                else {
+                    foreach my $element (@{$haystack}) {
+                        if ( !defined($element) ) {
+                            $found = 1;
+                            last;
+                        }
                     }
                 }
             }

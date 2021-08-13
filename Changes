@@ -19,7 +19,7 @@ Revision history for Perl extension Carp::Assert::More.
         message.
 
         assert_in() is more strict. Each element of the target array
-        must be defined and not a reference.
+        is checked to not be a reference.
 
         assert_exists() and assert_lacks() are more strict.  The list
         of keys to check cannot be empty.
@@ -27,6 +27,9 @@ Revision history for Perl extension Carp::Assert::More.
         [ENHANCEMENTS]
         Added assert_context_nonvoid() and assert_context_scalar()
         to assert on how the executing function has been called.
+
+        assert_in() now lets you use undef as both the needle and one
+        of the values in the haystack.
 
 
 1.26    Sat Dec 26 00:26:23 CST 2020
