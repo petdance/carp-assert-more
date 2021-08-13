@@ -8,8 +8,6 @@ use Scalar::Util;
 
 use vars qw( $VERSION @ISA @EXPORT );
 
-sub _any(&;@);
-
 =head1 NAME
 
 Carp::Assert::More - Convenience assertions for common situations
@@ -502,7 +500,11 @@ sub assert_isa_in($$;$) {
     my $types = shift;
     my $name  = shift;
 
-    return if _any { Scalar::Util::blessed($obj) && $obj->isa($_) } @{$types};
+    if ( Scalar::Util::blessed($obj) ) {
+        for ( @{$types} ) {
+            return if $obj->isa($_);
+        }
+    }
 
     require Carp;
     &Carp::confess( _fail_msg($name) );
@@ -1112,14 +1114,6 @@ accidentally use C<assert($msg)>, which of course never fires.
 sub assert_fail(;$) {
     require Carp;
     &Carp::confess( _fail_msg($_[0]) );
-}
-
-
-# Since List::Util doesn't have any() all the way back.
-sub _any(&;@) {
-    my $sub = shift;
-    $sub->($_) && return 1 for @_;
-    return 0;
 }
 
 
