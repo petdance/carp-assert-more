@@ -8,7 +8,7 @@ Carp::Assert::More - Convenience assertions for common situations
 
 # VERSION
 
-Version 1.26
+Version 2.0.0
 
 # SYNOPSIS
 
@@ -30,7 +30,7 @@ difference between calling
     assert_isa( $foo, 'DateTime' );
 
 or
-    assert_datetime( $foo );
+    assert\_datetime( $foo );
 
 that are provided by Carp::Assert::More and calling these assertions
 from Carp::Assert
@@ -40,13 +40,6 @@ from Carp::Assert
 
 My intent here is to make common assertions easy so that we as programmers
 have no excuse to not use them.
-
-# CAVEATS
-
-I haven't specifically done anything to make Carp::Assert::More be
-backwards compatible with anything besides Perl 5.6.1, much less back
-to 5.004.  Perhaps someone with better testing resources in that area
-can help me out here.
 
 # SIMPLE ASSERTIONS
 
@@ -80,13 +73,14 @@ Asserts that _$this_ is not defined.
 
 ## assert\_nonblank( $this \[, $name\] )
 
-Asserts that _$this_ is not blank and not a reference.
+Asserts that _$this_ is not a reference and is not an empty string.
 
 # NUMERIC ASSERTIONS
 
 ## assert\_numeric( $n \[, $name\] )
 
 Asserts that `$n` looks like a number, according to `Scalar::Util::looks_like_number`.
+`undef` will always fail.
 
 ## assert\_integer( $this \[, $name \] )
 
@@ -99,17 +93,15 @@ Asserts that _$this_ is an integer, which may be zero or negative.
 
 ## assert\_nonzero( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is not zero.
+Asserts that the numeric value of _$this_ is defined and is not zero.
 
     assert_nonzero( 0 );    # FAIL
     assert_nonzero( -14 );  # pass
     assert_nonzero( '14.' );  # pass
 
-Asserts that the numeric value of _$this_ is not zero.
-
 ## assert\_positive( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is greater than zero.
+Asserts that _$this_ is defined, numeric and greater than zero.
 
     assert_positive( 0 );    # FAIL
     assert_positive( -14 );  # FAIL
@@ -117,9 +109,8 @@ Asserts that the numeric value of _$this_ is greater than zero.
 
 ## assert\_nonnegative( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is greater than or equal
-to zero.  Since non-numeric strings evaluate to zero, this means that
-any non-numeric string will pass.
+Asserts that _$this_ is defined, numeric and greater than or equal
+to zero.
 
     assert_nonnegative( 0 );      # pass
     assert_nonnegative( -14 );    # FAIL
@@ -128,7 +119,7 @@ any non-numeric string will pass.
 
 ## assert\_negative( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is less than zero.
+Asserts that the numeric value of _$this_ is defined and less than zero.
 
     assert_negative( 0 );       # FAIL
     assert_negative( -14 );     # pass
@@ -136,8 +127,7 @@ Asserts that the numeric value of _$this_ is less than zero.
 
 ## assert\_nonzero\_integer( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is not zero, and that _$this_
-is an integer.
+Asserts that the numeric value of _$this_ is defined, an integer, and not zero.
 
     assert_nonzero_integer( 0 );      # FAIL
     assert_nonzero_integer( -14 );    # pass
@@ -145,8 +135,7 @@ is an integer.
 
 ## assert\_positive\_integer( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is greater than zero, and
-that _$this_ is an integer.
+Asserts that the numeric value of _$this_ is defined, an integer and greater than zero.
 
     assert_positive_integer( 0 );     # FAIL
     assert_positive_integer( -14 );   # FAIL
@@ -155,17 +144,15 @@ that _$this_ is an integer.
 
 ## assert\_nonnegative\_integer( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is not less than zero, and
-that _$this_ is an integer.
+Asserts that the numeric value of _$this_ is defined, an integer, and not less than zero.
 
     assert_nonnegative_integer( 0 );      # pass
-    assert_nonnegative_integer( -14 );    # pass
+    assert_nonnegative_integer( -14 );    # FAIL
     assert_nonnegative_integer( '14.' );  # FAIL
 
 ## assert\_negative\_integer( $this \[, $name \] )
 
-Asserts that the numeric value of _$this_ is less than zero, and that
-_$this_ is an integer.
+Asserts that the numeric value of _$this_ is defined, an integer, and less than zero.
 
     assert_negative_integer( 0 );      # FAIL
     assert_negative_integer( -14 );    # pass
@@ -279,10 +266,11 @@ Asserts that `$date` is a DateTime object.
 
 ## assert\_in( $string, \\@inlist \[,$name\] );
 
-Asserts that _$string_ is defined and matches one of the elements
-of _\\@inlist_.
+Asserts that _$string_ matches one of the elements of _\\@inlist_.
+_$string_ may be undef.
 
-_\\@inlist_ must be an array reference of defined strings.
+_\\@inlist_ must be an array reference of non-ref strings.  If any
+element is a reference, the assertion fails.
 
 ## assert\_exists( \\%hash, $key \[,$name\] )
 
@@ -302,6 +290,7 @@ _%hash_, or that all of the keys in _@keylist_ exist in _%hash_.
 
 Asserts that _%hash_ is indeed a hash, and that _$key_ does NOT exist
 in _%hash_, or that none of the keys in _@keylist_ exist in _%hash_.
+The list `@keylist` cannot be empty.
 
     assert_lacks( \%users, 'root', 'Root is not in the user table' );
 
@@ -318,6 +307,58 @@ This is used to ensure that there are no extra keys in a given hash.
 ## assert\_keys\_are( \\%hash, \\@keys \[, $name \] )
 
 Asserts that the keys for `%hash` are exactly `@keys`, no more and no less.
+
+# CONTEXT ASSERTIONS
+
+## assert\_context\_nonvoid( \[$name\] )
+
+Verifies that the function currently being executed has not been called
+in void context.  This is to ensure the calling function is not ignoring
+the return value of the executing function.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return $important_value;
+    }
+
+These calls to `something` will pass:
+
+    my $val = something();
+    my @things = something();
+
+but this will fail:
+
+    something();
+
+## assert\_context\_scalar( \[$name\] )
+
+Verifies that the function currently being executed has been called in
+scalar context.  This is to ensure the calling function is not ignoring
+the return value of the executing function.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return $important_value;
+    }
+
+This call to `something` will pass:
+
+    my $val = something();
+
+but these will fail:
+
+    something();
+    my @things = something();
 
 # UTILITY ASSERTIONS
 
