@@ -24,6 +24,10 @@ Revision history for Perl extension Carp::Assert::More.
         assert_exists() and assert_lacks() are more strict.  The list
         of keys to check cannot be empty.
 
+        [ENHANCEMENTS]
+        Added assert_context_nonvoid() and assert_context_scalar()
+        to assert on how the executing function has been called.
+
 
 1.26    Sat Dec 26 00:26:23 CST 2020
         [ENHANCEMENTS]
