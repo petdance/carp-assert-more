@@ -115,7 +115,7 @@ sub assert_is($$;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -136,7 +136,7 @@ sub assert_isnt($$;$) {
     return if defined($string) && defined($unmatch) && ($string ne $unmatch);
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -160,7 +160,7 @@ sub assert_like($$;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -184,7 +184,7 @@ sub assert_unlike($$;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -198,7 +198,7 @@ sub assert_defined($;$) {
     return if defined( $_[0] );
 
     require Carp;
-    &Carp::confess( _fail_msg($_[1]) );
+    &Carp::confess( _failure_msg($_[1]) );
 }
 
 
@@ -212,7 +212,7 @@ sub assert_undefined($;$) {
     return unless defined( $_[0] );
 
     require Carp;
-    &Carp::confess( _fail_msg($_[1]) );
+    &Carp::confess( _failure_msg($_[1]) );
 }
 
 =head2 assert_nonblank( $this [, $name] )
@@ -225,12 +225,22 @@ sub assert_nonblank($;$) {
     my $this = shift;
     my $name = shift;
 
-    if ( defined($this) && !ref($this) ) {
-        return if $this ne '';
+    my $why;
+    if ( !defined($this) ) {
+        $why = 'Value is undef.';
+    }
+    else {
+        if ( ref($this) ) {
+            $why = 'Value is a reference to ' . ref($this) . '.';
+        }
+        else {
+            return if $this ne '';
+            $why = 'Value is blank.';
+        }
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
@@ -250,7 +260,7 @@ sub assert_numeric {
     return if Scalar::Util::looks_like_number( $n );
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -274,7 +284,7 @@ sub assert_integer($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -297,7 +307,7 @@ sub assert_nonzero($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -320,7 +330,7 @@ sub assert_positive($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -345,7 +355,7 @@ sub assert_nonnegative($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -367,7 +377,7 @@ sub assert_negative($;$) {
     return if defined($this) && ($this+0 < 0);
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -390,7 +400,7 @@ sub assert_nonzero_integer($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -414,7 +424,7 @@ sub assert_positive_integer($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -437,7 +447,7 @@ sub assert_nonnegative_integer($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -460,7 +470,7 @@ sub assert_negative_integer($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -485,7 +495,7 @@ sub assert_isa($$;$) {
     return if ref($this) eq $type;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -509,7 +519,7 @@ sub assert_isa_in($$;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -552,7 +562,7 @@ sub assert_empty($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -595,7 +605,7 @@ sub assert_nonempty($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -613,7 +623,7 @@ sub assert_nonref($;$) {
     return unless ref( $this );
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -647,7 +657,7 @@ sub assert_hashref($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -667,7 +677,7 @@ sub assert_hashref_nonempty($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -696,7 +706,7 @@ sub assert_arrayref($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 *assert_listref = *assert_arrayref;
 
@@ -716,7 +726,7 @@ sub assert_arrayref_nonempty($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -746,7 +756,7 @@ sub assert_aoh {
     return if $ok;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -765,7 +775,7 @@ sub assert_coderef($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -786,7 +796,7 @@ sub assert_datetime($;$) {
     }
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -849,7 +859,7 @@ sub assert_in($$;$) {
     return if $found;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -897,7 +907,7 @@ sub assert_exists($$;$) {
     return if $ok;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -945,7 +955,7 @@ sub assert_lacks($$;$) {
     return if $ok;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -966,6 +976,7 @@ sub assert_all_keys_in($$;$) {
     my $keys = shift;
     my $name = shift;
 
+    my $why;
     my $ok = 0;
     if ( ref($hash) eq 'HASH' || (Scalar::Util::blessed( $hash ) && $hash->isa( 'HASH' )) ) {
         if ( ref($keys) eq 'ARRAY' ) {
@@ -974,16 +985,23 @@ sub assert_all_keys_in($$;$) {
             for my $key ( keys %{$hash} ) {
                 if ( !exists $keys{$key} ) {
                     $ok = 0;
+                    $why = qq{Key "$key" is not a valid key.};
                     last;
                 }
             }
         }
+        else {
+            $why = 'Argument for array of keys is not an arrayref.';
+        }
+    }
+    else {
+        $why = 'Argument for hash is not a hashref.';
     }
 
     return if $ok;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
@@ -998,28 +1016,43 @@ sub assert_keys_are($$;$) {
     my $keys = shift;
     my $name = shift;
 
+    my $why;
     my $ok = 0;
     if ( ref($hash) eq 'HASH' || (Scalar::Util::blessed( $hash ) && $hash->isa( 'HASH' )) ) {
         if ( ref($keys) eq 'ARRAY' ) {
             my %keys = map { $_ => 1 } @{$keys};
 
-            my @hashkeys = keys %{$hash};
-            if ( scalar @hashkeys == scalar keys %keys ) {
-                $ok = 1;
-                for my $key ( @hashkeys ) {
-                    if ( !exists $keys{$key} ) {
-                        $ok = 0;
-                        last;
-                    }
+            # First check all the keys are allowed.
+            $ok = 1;
+            for my $key ( keys %{$hash} ) {
+                if ( !exists $keys{$key} ) {
+                    $ok = 0;
+                    $why = qq{Key "$key" is not a valid key.};
+                    last;
+                }
+            }
+
+            # Now check that all the valid keys are represented.
+            for my $key ( @{$keys} ) {
+                if ( !exists $hash->{$key} ) {
+                    $ok = 0;
+                    $why = qq{Key "$key" is not in the hash.};
+                    last;
                 }
             }
         }
+        else {
+            $why = 'Argument for array of keys is not an arrayref.';
+        }
+    }
+    else {
+        $why = 'Argument for hash is not a hashref.';
     }
 
     return if $ok;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
@@ -1060,7 +1093,7 @@ sub assert_context_nonvoid(;$) {
     return if defined($wantarray);
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -1099,7 +1132,7 @@ sub assert_context_scalar(;$) {
     return if defined($wantarray) && !$wantarray;
 
     require Carp;
-    &Carp::confess( _fail_msg($name) );
+    &Carp::confess( _failure_msg($name) );
 }
 
 
@@ -1115,23 +1148,27 @@ accidentally use C<assert($msg)>, which of course never fires.
 
 sub assert_fail(;$) {
     require Carp;
-    &Carp::confess( _fail_msg($_[0]) );
+    &Carp::confess( _failure_msg($_[0]) );
 }
 
 
 # Can't call confess() here or the stack trace will be wrong.
-sub _fail_msg {
-    my($name) = shift;
+sub _failure_msg {
+    my $name = shift;
+    my $why  = shift;
+
     my $msg = 'Assertion';
     $msg   .= " ($name)" if defined $name;
     $msg   .= " failed!\n";
+    $msg   .= "$why\n" if defined($why);
+
     return $msg;
 }
 
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2021 Andy Lester.
+Copyright 2005-2022 Andy Lester.
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
