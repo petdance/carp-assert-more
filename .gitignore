@@ -16,3 +16,5 @@ nytprof.out
 pm_to_blib
 Carp-Assert-More-*/
 tags
+*.swp
+*~
