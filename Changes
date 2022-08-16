@@ -19,6 +19,8 @@ Revision history for Perl extension Carp::Assert::More.
         Similar changes have been made to:
         * assert_all_keys_in
         * assert_keys_are
+        * assert_empty
+        * assert_nonempty
 
 
 2.0.1   Fri Aug 13 11:57:15 CDT 2021

@@ -554,15 +554,27 @@ sub assert_empty($;$) {
         $underlying_type = ref( $ref );
     }
 
+    my $why;
+    my $n;
     if ( $underlying_type eq 'HASH' ) {
         return if scalar keys %{$ref} == 0;
+        $n = scalar keys %{$ref};
+        $why = "Hash contains $n key";
     }
     elsif ( $underlying_type eq 'ARRAY' ) {
         return if @{$ref} == 0;
+        $n = scalar @{$ref};
+        $why = "Array contains $n element";
+    }
+    else {
+        $why = 'Argument is not a hash or array.';
     }
 
+    $why .= 's' if $n && ($n>1);
+    $why .= '.';
+
     require Carp;
-    &Carp::confess( _failure_msg($name) );
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
@@ -597,15 +609,22 @@ sub assert_nonempty($;$) {
         $underlying_type = ref( $ref );
     }
 
+    my $why;
+    my $n;
     if ( $underlying_type eq 'HASH' ) {
         return if scalar keys %{$ref} > 0;
+        $why = "Hash contains 0 keys.";
     }
     elsif ( $underlying_type eq 'ARRAY' ) {
         return if scalar @{$ref} > 0;
+        $why = "Array contains 0 elements.";
+    }
+    else {
+        $why = 'Argument is not a hash or array.';
     }
 
     require Carp;
-    &Carp::confess( _failure_msg($name) );
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
