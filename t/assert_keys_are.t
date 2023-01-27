@@ -3,15 +3,13 @@
 use warnings;
 use strict;
 
-use Test::More tests => 1;
+use Test::More tests => 10;
 
 use Carp::Assert::More;
 
 use Test::Exception;
 
-subtest assert_keys_are => sub {
-    plan tests => 10;
-
+MAIN: {
     my $monolith = {
         depth  => 1,
         width  => 4,
@@ -68,6 +66,7 @@ subtest assert_keys_are => sub {
         qr/Assertion.*failed!.+Argument for hash is not a hashref\./sm,
         'Fails on a non-hashref hash'
     );
-};
+}
+
 
 exit 0;
