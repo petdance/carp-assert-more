@@ -4,7 +4,7 @@ use warnings;
 use strict;
 
 use Exporter;
-use Scalar::Util;
+use Scalar::Util qw( looks_like_number );;
 
 use vars qw( $VERSION @ISA @EXPORT );
 
@@ -26,6 +26,7 @@ BEGIN {
         assert_aoh
         assert_arrayref
         assert_arrayref_nonempty
+        assert_cmp
         assert_coderef
         assert_context_nonvoid
         assert_context_scalar
@@ -137,6 +138,103 @@ sub assert_isnt($$;$) {
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_cmp( $x, $op, $y [,$name] )
+
+Asserts that the relation C<$x $op $y> is true. For example:
+
+    assert_cmp( $divisor, '!=', 0, 'Divisor must not be zero' );
+
+is the same as:
+
+    assert( $divisor != 0, 'Divisor must not be zero' );
+
+but with better error reporting.
+
+The following operators are supported:
+
+=over 4
+
+=item * == numeric equal
+
+=item * != numeric not equal
+
+=item * > numeric greater than
+
+=item * >= numeric greater than or equal
+
+=item * < numeric less than
+
+=item * <= numeric less than or equal
+
+=item * lt string less than
+
+=item * le string less than or equal
+
+=item * gt string less than
+
+=item * ge string less than or equal
+
+=back
+
+There is no support for C<eq> or C<ne> because those already have
+C<assert_is> and C<assert_isnt>, respectively.
+
+If either C<$x> or C<$y> is undef, the assertion will fail.
+
+If the operator is numeric, and C<$x> or C<$y> are not numbers, the assertion will fail.
+
+=cut
+
+sub assert_cmp($$$;$) {
+    my $x    = shift;
+    my $op   = shift;
+    my $y    = shift;
+    my $name = shift;
+
+    my $why;
+
+    if ( !defined($op) ) {
+        $why = 'Invalid operator <undef>';
+    }
+    elsif ( $op eq '==' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x == $y);
+    }
+    elsif ( $op eq '!=' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x != $y);
+    }
+    elsif ( $op eq '<' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x < $y);
+    }
+    elsif ( $op eq '<=' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x <= $y);
+    }
+    elsif ( $op eq '>' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x > $y);
+    }
+    elsif ( $op eq '>=' ) {
+        return if looks_like_number($x) && looks_like_number($y) && ($x >= $y);
+    }
+    elsif ( $op eq 'lt' ) {
+        return if defined($x) && defined($y) && ($x lt $y);
+    }
+    elsif ( $op eq 'le' ) {
+        return if defined($x) && defined($y) && ($x le $y);
+    }
+    elsif ( $op eq 'gt' ) {
+        return if defined($x) && defined($y) && ($x gt $y);
+    }
+    elsif ( $op eq 'ge' ) {
+        return if defined($x) && defined($y) && ($x ge $y);
+    }
+    else {
+        $why = qq{Unknown operator "$op"};
+    }
+
+    require Carp;
+    &Carp::confess( _failure_msg($name, $why) );
 }
 
 
@@ -1187,7 +1285,7 @@ sub _failure_msg {
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2022 Andy Lester.
+Copyright 2005-2023 Andy Lester
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
