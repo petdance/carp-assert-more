@@ -231,7 +231,7 @@ sub assert_cmp($$$;$) {
         return if defined($x) && defined($y) && ($x ge $y);
     }
     else {
-        $why = qq{Unknown operator "$op"};
+        $why = qq{Invalid operator "$op"};
     }
 
     $why //= "Failed: " . ($x // 'undef') . ' ' . $op . ' ' . ($y // 'undef');
