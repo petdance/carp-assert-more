@@ -1136,7 +1136,7 @@ sub assert_keys_are($$;$) {
     my $keys = shift;
     my $name = shift;
 
-    my $why;
+    my @why;
     my $ok = 0;
     if ( ref($hash) eq 'HASH' || (Scalar::Util::blessed( $hash ) && $hash->isa( 'HASH' )) ) {
         if ( ref($keys) eq 'ARRAY' ) {
@@ -1147,8 +1147,7 @@ sub assert_keys_are($$;$) {
             for my $key ( keys %{$hash} ) {
                 if ( !exists $keys{$key} ) {
                     $ok = 0;
-                    $why = qq{Key "$key" is not a valid key.};
-                    last;
+                    push @why, qq{Key "$key" is not a valid key.};
                 }
             }
 
@@ -1156,23 +1155,22 @@ sub assert_keys_are($$;$) {
             for my $key ( @{$keys} ) {
                 if ( !exists $hash->{$key} ) {
                     $ok = 0;
-                    $why = qq{Key "$key" is not in the hash.};
-                    last;
+                    push @why, qq{Key "$key" is not in the hash.};
                 }
             }
         }
         else {
-            $why = 'Argument for array of keys is not an arrayref.';
+            push @why, 'Argument for array of keys is not an arrayref.';
         }
     }
     else {
-        $why = 'Argument for hash is not a hashref.';
+        push @why, 'Argument for hash is not a hashref.';
     }
 
     return if $ok;
 
     require Carp;
-    &Carp::confess( _failure_msg($name, $why) );
+    &Carp::confess( _failure_msg($name, @why) );
 }
 
 
@@ -1274,13 +1272,12 @@ sub assert_fail(;$) {
 
 # Can't call confess() here or the stack trace will be wrong.
 sub _failure_msg {
-    my $name = shift;
-    my $why  = shift;
+    my ($name, @why) = @_;
 
     my $msg = 'Assertion';
     $msg   .= " ($name)" if defined $name;
     $msg   .= " failed!\n";
-    $msg   .= "$why\n" if defined($why);
+    $msg   .= "$_\n" for @why;
 
     return $msg;
 }
