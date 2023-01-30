@@ -1,7 +1,7 @@
 Revision history for Perl extension Carp::Assert::More.
 
 
-2.2.0
+2.2.0   Sun Jan 29 20:23:59 CST 2023
         [ENHANCEMENTS]
         Added assert_cmp( $x, $op, $y [, $msg] ), analogous to cmp_ok in Test::More, so you can do
             assert_cmp( $n, '>', 10 );
