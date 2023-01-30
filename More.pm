@@ -1096,7 +1096,7 @@ sub assert_all_keys_in($$;$) {
     my $keys = shift;
     my $name = shift;
 
-    my $why;
+    my @why;
     my $ok = 0;
     if ( ref($hash) eq 'HASH' || (Scalar::Util::blessed( $hash ) && $hash->isa( 'HASH' )) ) {
         if ( ref($keys) eq 'ARRAY' ) {
@@ -1105,23 +1105,22 @@ sub assert_all_keys_in($$;$) {
             for my $key ( keys %{$hash} ) {
                 if ( !exists $keys{$key} ) {
                     $ok = 0;
-                    $why = qq{Key "$key" is not a valid key.};
-                    last;
+                    push @why, qq{Key "$key" is not a valid key.};
                 }
             }
         }
         else {
-            $why = 'Argument for array of keys is not an arrayref.';
+            push @why, 'Argument for array of keys is not an arrayref.';
         }
     }
     else {
-        $why = 'Argument for hash is not a hashref.';
+        push @why, 'Argument for hash is not a hashref.';
     }
 
     return if $ok;
 
     require Carp;
-    &Carp::confess( _failure_msg($name, $why) );
+    &Carp::confess( _failure_msg($name, @why) );
 }
 
 

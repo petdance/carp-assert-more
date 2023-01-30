@@ -9,6 +9,8 @@ Revision history for Perl extension Carp::Assert::More.
             assert( $n > 10 );
         Operators supported are: lt le gt ge == != > >= < <=
 
+        assert_all_keys_in() now lists all key failures in the message, not just the first one.
+
         assert_keys_are() now lists all key failures in the message, not just the first one.
 
 
