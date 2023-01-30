@@ -1,7 +1,8 @@
 package Carp::Assert::More;
 
-use warnings;
+use 5.010;
 use strict;
+use warnings;
 
 use Exporter;
 use Scalar::Util qw( looks_like_number );;
@@ -232,6 +233,8 @@ sub assert_cmp($$$;$) {
     else {
         $why = qq{Unknown operator "$op"};
     }
+
+    $why //= "Failed: " . ($x // 'undef') . ' ' . $op . ' ' . ($y // 'undef');
 
     require Carp;
     &Carp::confess( _failure_msg($name, $why) );
