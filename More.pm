@@ -100,7 +100,10 @@ have no excuse to not use them.
 
 =head2 assert_is( $string, $match [,$name] )
 
-Asserts that I<$string> matches I<$match>.
+Asserts that I<$string> is the same string value as I<$match>.
+
+C<undef> is not converted to an empty string. If both strings are
+C<undef>, they match. If only one string is C<undef>, they don't match.
 
 =cut
 
@@ -123,7 +126,9 @@ sub assert_is($$;$) {
 
 =head2 assert_isnt( $string, $unmatch [,$name] )
 
-Asserts that I<$string> does NOT match I<$unmatch>.
+Asserts that I<$string> does NOT have the same string value as I<$unmatch>.
+
+C<undef> is not converted to an empty string.
 
 =cut
 
@@ -144,15 +149,25 @@ sub assert_isnt($$;$) {
 
 =head2 assert_cmp( $x, $op, $y [,$name] )
 
-Asserts that the relation C<$x $op $y> is true. For example:
+Asserts that the relation C<$x $op $y> is true. It lets you know why
+the comparsison failed, rather than simply that it did fail, by giving
+better diagnostics than a plain C<assert()>, as well as showing the
+operands in the stacktrace.
 
-    assert_cmp( $divisor, '!=', 0, 'Divisor must not be zero' );
+Plain C<assert()>:
 
-is the same as:
+    assert( $nitems <= 10, 'Ten items or fewer in the express lane' );
 
-    assert( $divisor != 0, 'Divisor must not be zero' );
+    Assertion (Ten items or fewer in the express lane) failed!
+    Carp::Assert::assert("", "Ten items or fewer in the express lane") called at foo.pl line 12
 
-but with better error reporting.
+With C<assert_cmp()>:
+
+    assert_cmp( $nitems, '<=', 10, 'Ten items or fewer in the express lane' );
+
+    Assertion (Ten items or fewer in the express lane) failed!
+    Failed: 14 <= 10
+    Carp::Assert::More::assert_cmp(14, "<=", 10, "Ten items or fewer in the express lane") called at foo.pl line 11
 
 The following operators are supported:
 
