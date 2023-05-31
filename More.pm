@@ -27,6 +27,7 @@ BEGIN {
         assert_aoh
         assert_arrayref
         assert_arrayref_nonempty
+        assert_arrayref_of
         assert_cmp
         assert_coderef
         assert_context_nonvoid
@@ -862,6 +863,51 @@ sub assert_arrayref_nonempty($;$) {
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_arrayref_of( $ref, $type [, $name] )
+
+Asserts that I<$ref> is reference to an array that has at least one
+element in it, and every one of those elements is of type I<$type>.
+
+For example:
+
+    my @users = get_users();
+    assert_arrayref_of( \@users, 'My::User' );
+
+=cut
+
+sub assert_arrayref_of($$;$) {
+    my $ref  = shift;
+    my $type = shift;
+    my $name = shift;
+
+    my $ok;
+    my @why;
+
+    if ( ref($ref) eq 'ARRAY' || (Scalar::Util::blessed( $ref ) && $ref->isa( 'ARRAY' )) ) {
+        if ( scalar @{$ref} > 0 ) {
+            my $n = 0;
+            for my $i ( @{$ref} ) {
+                if ( !( ( Scalar::Util::blessed( $i ) && $i->isa( $type ) ) || (ref($i) eq $type) ) ) {
+                    push @why, "Element #$n is not of type $type";
+                }
+                ++$n;
+            }
+            $ok = !@why;
+        }
+        else {
+            push @why, 'Array contains no elements';
+        }
+    }
+
+    if ( !$ok ) {
+        require Carp;
+        &Carp::confess( _failure_msg($name), @why );
+    }
+
+    return;
 }
 
 
