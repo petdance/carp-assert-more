@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 9;
+use Test::More tests => 10;
 
 use Carp::Assert::More;
 
@@ -36,6 +36,9 @@ MAIN: {
     # A coderef is not an arrayref.
     my $coderef = sub {};
     throws_ok( sub { assert_arrayref_all( $coderef, $api ) }, $FAILED );
+
+    # An arrayref is not a coderef.
+    throws_ok( sub { assert_arrayref_all( \@empty_ary, [] ) }, qr/assert_arrayref_all requires a code reference/ );
 }
 
 
