@@ -18,3 +18,4 @@ Carp-Assert-More-*/
 tags
 *.swp
 *~
+.prove.yaml
