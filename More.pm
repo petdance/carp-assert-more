@@ -28,6 +28,7 @@ BEGIN {
         assert_arrayref
         assert_arrayref_nonempty
         assert_arrayref_of
+        assert_arrayref_all
         assert_cmp
         assert_coderef
         assert_context_nonvoid
@@ -903,6 +904,57 @@ sub assert_arrayref_of($$;$) {
     }
 
     if ( !$ok ) {
+        require Carp;
+        &Carp::confess( _failure_msg($name), @why );
+    }
+
+    return;
+}
+
+
+=head2 assert_arrayref_all( $aref, $sub [, $name] )
+
+Asserts that I<$aref> is reference to an array that has at least one
+element in it. Each element of the array is passed to subroutine I<$sub>
+which is assumed to be an assertion.
+
+For example:
+
+    my $aref_of_counts = get_counts();
+    assert_arrayref_all( $aref, \&assert_positive_integer, 'Counts are positive' );
+
+Whatever is passed as I<$name>, a string saying "Element #N" will be
+appended, where N is the zero-based index of the array.
+
+=cut
+
+sub assert_arrayref_all($$;$) {
+    my $aref = shift;
+    my $sub  = shift;
+    my $name = shift;
+
+    my @why;
+
+    assert_coderef( $sub, 'assert_arrayref_all requires a code reference' );
+
+    if ( ref($aref) eq 'ARRAY' || (Scalar::Util::blessed( $aref ) && $aref->isa( 'ARRAY' )) ) {
+        if ( @{$aref} ) {
+            my $inner_msg = defined($name) ? "$name: " : 'assert_arrayref_all: ';
+            my $n = 0;
+            for my $i ( @{$aref} ) {
+                $sub->( $i, "${inner_msg}Element #$n" );
+                ++$n;
+            }
+        }
+        else {
+            push @why, 'Array contains no elements';
+        }
+    }
+    else {
+        push @why, 'First argument to assert_arrayref_all was not an array';
+    }
+
+    if ( @why ) {
         require Carp;
         &Carp::confess( _failure_msg($name), @why );
     }
