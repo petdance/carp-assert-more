@@ -15,12 +15,12 @@ Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
-Version 2.3.0
+Version 2.4.0
 
 =cut
 
 BEGIN {
-    $VERSION = '2.3.0';
+    $VERSION = '2.4.0';
     @ISA = qw(Exporter);
     @EXPORT = qw(
         assert_all_keys_in

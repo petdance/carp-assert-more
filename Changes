@@ -1,7 +1,7 @@
 Revision history for Perl extension Carp::Assert::More.
 
 
-NEXT
+2.4.0   Mon Mar  4 21:54:07 CST 2024
         [ENHANCEMENTS]
         New function assert_arrayref_all() calls an assertion function for every element in the array.
 
