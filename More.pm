@@ -1261,14 +1261,17 @@ but this will fail:
 
     something();
 
+If the C<$name> argument is not passed, a default message of "<funcname>
+must not be called in void context" is provided.
+
 =cut
 
 sub assert_context_nonvoid(;$) {
-    my $name = shift;
+    my @caller = caller(1);
 
-    my $wantarray = (caller(1))[5];
+    return if defined($caller[5]);
 
-    return if defined($wantarray);
+    my $name = shift // "$caller[3] must not be called in void context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
@@ -1300,14 +1303,18 @@ but these will fail:
     something();
     my @things = something();
 
+If the C<$name> argument is not passed, a default message of "<funcname>
+must be called in scalar context" is provided.
+
 =cut
 
 sub assert_context_scalar(;$) {
-    my $name = shift;
-
-    my $wantarray = (caller(1))[5];
+    my @caller = caller(1);
+    my $wantarray = $caller[5];
 
     return if defined($wantarray) && !$wantarray;
+
+    my $name = shift // "$caller[3] must be called in scalar context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
