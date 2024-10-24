@@ -1,6 +1,9 @@
-#!perl -Tw
+#!perl
 
-use Test::More tests => 42;
+use strict;
+use warnings;
+
+use Test::More tests => 43;
 
 use Carp::Assert::More;
 

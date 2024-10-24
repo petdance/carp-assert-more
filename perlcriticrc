@@ -3,6 +3,9 @@
 allow_leading_tabs = 0
 [-CodeLayout::RequireTidyCode]
 
+[-Community::Prototypes]
+# We use prototypes for most assertions.
+
 [-ControlStructures::ProhibitPostfixControls]
 
 [-Documentation::RequirePodAtEnd]

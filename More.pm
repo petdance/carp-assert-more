@@ -31,6 +31,7 @@ BEGIN {
         assert_arrayref_all
         assert_cmp
         assert_coderef
+        assert_context_list
         assert_context_nonvoid
         assert_context_scalar
         assert_datetime
@@ -1367,6 +1368,48 @@ sub assert_context_scalar(;$) {
     return if defined($wantarray) && !$wantarray;
 
     my $name = shift // "$caller[3] must be called in scalar context";
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_context_list( [$name] )
+
+Verifies that the function currently being executed has been called in
+list context.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return @values;
+    }
+
+This call to C<something> will pass:
+
+    my @vals = something();
+
+but these will fail:
+
+    something();
+    my $thing = something();
+
+If the C<$name> argument is not passed, a default message of "<funcname>
+must be called in list context" is provided.
+
+=cut
+
+sub assert_context_list(;$) {
+    my @caller = caller(1);
+    my $wantarray = $caller[5];
+
+    return if $wantarray;
+
+    my $name = shift // "$caller[3] must be called in list context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );

@@ -437,6 +437,33 @@ but these will fail:
 If the `$name` argument is not passed, a default message of "&lt;funcname>
 must be called in scalar context" is provided.
 
+## assert\_context\_list( \[$name\] )
+
+Verifies that the function currently being executed has been called in
+list context.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_scalar();
+
+        return @values;
+    }
+
+This call to `something` will pass:
+
+    my @vals = something();
+
+but these will fail:
+
+    something();
+    my $thing = something();
+
+If the `$name` argument is not passed, a default message of "&lt;funcname>
+must be called in list context" is provided.
+
 # UTILITY ASSERTIONS
 
 ## assert\_fail( \[$name\] )
