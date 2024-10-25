@@ -34,6 +34,7 @@ BEGIN {
         assert_context_list
         assert_context_nonvoid
         assert_context_scalar
+        assert_context_void
         assert_datetime
         assert_defined
         assert_empty
@@ -1300,7 +1301,7 @@ Given this function:
     sub something {
         ...
 
-        assert_context_scalar();
+        assert_context_nonvoid();
 
         return $important_value;
     }
@@ -1320,11 +1321,53 @@ must not be called in void context" is provided.
 =cut
 
 sub assert_context_nonvoid(;$) {
-    my @caller = caller(1);
+    my (undef, undef, undef, $subroutine, undef, $wantarray) = caller(1);
 
-    return if defined($caller[5]);
+    return if defined($wantarray);
 
-    my $name = shift // "$caller[3] must not be called in void context";
+    my $name = $_[0] // "$subroutine must not be called in void context";
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_context_void( [$name] )
+
+Verifies that the function currently being executed has been called
+in void context.  This is for functions that do not return anything
+meaningful.
+
+Given this function:
+
+    sub something {
+        ...
+
+        assert_context_void();
+
+        return; # No meaningful value.
+    }
+
+These calls to C<something> will fail:
+
+    my $val = something();
+    my @things = something();
+
+but this will pass:
+
+    something();
+
+If the C<$name> argument is not passed, a default message of "<funcname>
+must be called in void context" is provided.
+
+=cut
+
+sub assert_context_void(;$) {
+    my (undef, undef, undef, $subroutine, undef, $wantarray) = caller(1);
+
+    return if not defined($wantarray);
+
+    my $name = $_[0] // "$subroutine must be called in void context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
@@ -1362,12 +1405,11 @@ must be called in scalar context" is provided.
 =cut
 
 sub assert_context_scalar(;$) {
-    my @caller = caller(1);
-    my $wantarray = $caller[5];
+    my (undef, undef, undef, $subroutine, undef, $wantarray) = caller(1);
 
     return if defined($wantarray) && !$wantarray;
 
-    my $name = shift // "$caller[3] must be called in scalar context";
+    my $name = $_[0] // "$subroutine must be called in scalar context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );
@@ -1404,12 +1446,11 @@ must be called in list context" is provided.
 =cut
 
 sub assert_context_list(;$) {
-    my @caller = caller(1);
-    my $wantarray = $caller[5];
+    my (undef, undef, undef, $subroutine, undef, $wantarray) = caller(1);
 
     return if $wantarray;
 
-    my $name = shift // "$caller[3] must be called in list context";
+    my $name = shift // "$subroutine must be called in list context";
 
     require Carp;
     &Carp::confess( _failure_msg($name) );

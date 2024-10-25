@@ -5,6 +5,8 @@ NEXT
         [ENHANCEMENTS]
         Add assert_context_list() function.
 
+        Add assert_context_void() function.
+
 
 2.4.0   Mon Mar  4 21:54:07 CST 2024
         [ENHANCEMENTS]
