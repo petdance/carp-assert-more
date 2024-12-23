@@ -4,7 +4,7 @@ use 5.010;
 use strict;
 use warnings;
 
-use Exporter;
+use parent 'Exporter';
 use Scalar::Util qw( looks_like_number );;
 
 use vars qw( $VERSION @ISA @EXPORT );
@@ -15,63 +15,60 @@ Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
-Version 2.5.0
+Version 2.6.0
 
 =cut
 
-BEGIN {
-    $VERSION = '2.5.0';
-    @ISA = qw(Exporter);
-    @EXPORT = qw(
-        assert
-        assert_all_keys_in
-        assert_and
-        assert_aoh
-        assert_arrayref
-        assert_arrayref_nonempty
-        assert_arrayref_of
-        assert_arrayref_all
-        assert_cmp
-        assert_coderef
-        assert_context_list
-        assert_context_nonvoid
-        assert_context_scalar
-        assert_context_void
-        assert_datetime
-        assert_defined
-        assert_empty
-        assert_exists
-        assert_fail
-        assert_hashref
-        assert_hashref_nonempty
-        assert_in
-        assert_integer
-        assert_is
-        assert_isa
-        assert_isa_in
-        assert_isnt
-        assert_keys_are
-        assert_lacks
-        assert_like
-        assert_listref
-        assert_negative
-        assert_negative_integer
-        assert_nonblank
-        assert_nonempty
-        assert_nonnegative
-        assert_nonnegative_integer
-        assert_nonref
-        assert_nonzero
-        assert_nonzero_integer
-        assert_numeric
-        assert_or
-        assert_positive
-        assert_positive_integer
-        assert_undefined
-        assert_unlike
-        assert_xor
-    );
-}
+our $VERSION = '2.6.0';
+our @EXPORT = qw(
+    assert
+    assert_all_keys_in
+    assert_and
+    assert_aoh
+    assert_arrayref
+    assert_arrayref_nonempty
+    assert_arrayref_of
+    assert_arrayref_all
+    assert_cmp
+    assert_coderef
+    assert_context_list
+    assert_context_nonvoid
+    assert_context_scalar
+    assert_context_void
+    assert_datetime
+    assert_defined
+    assert_empty
+    assert_exists
+    assert_fail
+    assert_hashref
+    assert_hashref_nonempty
+    assert_in
+    assert_integer
+    assert_is
+    assert_isa
+    assert_isa_in
+    assert_isnt
+    assert_keys_are
+    assert_lacks
+    assert_like
+    assert_listref
+    assert_negative
+    assert_negative_integer
+    assert_nonblank
+    assert_nonempty
+    assert_nonnegative
+    assert_nonnegative_integer
+    assert_nonref
+    assert_nonzero
+    assert_nonzero_integer
+    assert_numeric
+    assert_or
+    assert_positive
+    assert_positive_integer
+    assert_undefined
+    assert_unlike
+    assert_xor
+);
 
 my $INTEGER = qr/^-?\d+$/;
 
