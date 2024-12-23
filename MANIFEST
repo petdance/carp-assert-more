@@ -6,6 +6,7 @@ Makefile.PL
 More.pm
 README.md
 t/00-load.t
+t/assert.t
 t/assert_all_keys_in.t
 t/assert_aoh.t
 t/assert_arrayref.t

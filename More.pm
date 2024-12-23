@@ -23,6 +23,7 @@ BEGIN {
     $VERSION = '2.5.0';
     @ISA = qw(Exporter);
     @EXPORT = qw(
+        assert
         assert_all_keys_in
         assert_aoh
         assert_arrayref
@@ -101,6 +102,24 @@ My intent here is to make common assertions easy so that we as programmers
 have no excuse to not use them.
 
 =head1 SIMPLE ASSERTIONS
+
+=head2 assert( $condition [, $name] )
+
+Asserts that C<$condition> is a true value.  This is the same as C<assert>
+in C<Carp::Assert>, provided as a convenience.
+
+=cut
+
+sub assert($;$) {
+    my $condition = shift;
+    my $name = shift;
+
+    return if $condition;
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
 
 =head2 assert_is( $string, $match [,$name] )
 
