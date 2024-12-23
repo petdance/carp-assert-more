@@ -25,6 +25,7 @@ BEGIN {
     @EXPORT = qw(
         assert
         assert_all_keys_in
+        assert_and
         assert_aoh
         assert_arrayref
         assert_arrayref_nonempty
@@ -63,10 +64,12 @@ BEGIN {
         assert_nonzero
         assert_nonzero_integer
         assert_numeric
+        assert_or
         assert_positive
         assert_positive_integer
         assert_undefined
         assert_unlike
+        assert_xor
     );
 }
 
@@ -380,6 +383,84 @@ sub assert_nonblank($;$) {
 
     require Carp;
     &Carp::confess( _failure_msg($name, $why) );
+}
+
+
+=head1 BOOLEAN ASSERTIONS
+
+These boolean assertions help make diagnostics more useful.
+
+If you use C<assert> with a boolean condition:
+
+    assert( $x && $y, 'Both X and Y should be true' );
+
+you can't tell why it failed:
+
+    Assertion (Both X and Y should be true) failed!
+     at .../Carp/Assert/More.pm line 123
+            Carp::Assert::More::assert(undef, 'Both X and Y should be true') called at foo.pl line 16
+
+But if you use C<assert_and>:
+
+    assert_and( $x, $y, 'Both X and Y should be true' );
+
+the stacktrace tells you which half of the expression failed.
+
+    Assertion (Both X and Y should be true) failed!
+     at .../Carp/Assert/More.pm line 123
+            Carp::Assert::More::assert_and('thing', undef, 'Both X and Y should be true') called at foo.pl line 16
+
+=head2 assert_and( $x, $y [, $name] )
+
+Asserts that both C<$x> and C<$y> are true.
+
+=cut
+
+sub assert_and($$;$) {
+    my $x    = shift;
+    my $y    = shift;
+    my $name = shift;
+
+    return if $x && $y;
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_or( $x, $y [, $name] )
+
+Asserts that at least one of C<$x> or C<$y> are true.
+
+=cut
+
+sub assert_or($$;$) {
+    my $x    = shift;
+    my $y    = shift;
+    my $name = shift;
+
+    return if $x || $y;
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
+=head2 assert_xor( $x, $y [, $name] )
+
+Asserts that C<$x> is true, or C<$y> is true, but not both.
+
+=cut
+
+sub assert_xor($$;$) {
+    my $x    = shift;
+    my $y    = shift;
+    my $name = shift;
+
+    return if $x && !$y;
+    return if $y && !$x;
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
 }
 
 

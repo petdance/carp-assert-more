@@ -6,6 +6,9 @@ NEXT
         Add assert(), the same as assert() in Carp::Assert, as a
         convenience.
 
+        Add assert_and(), assert_or() and assert_xor() for more helpful
+        stacktraces.
+
 
 2.5.0   Fri Oct 25 14:46:06 CDT 2024
         [ENHANCEMENTS]
