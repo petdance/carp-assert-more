@@ -1,7 +1,7 @@
 Revision history for Perl extension Carp::Assert::More.
 
 
-NEXT
+2.6.0   Sun Dec 22 23:37:00 CST 2024
         [ENHANCEMENTS]
         Add assert(), the same as assert() in Carp::Assert, as a
         convenience.
