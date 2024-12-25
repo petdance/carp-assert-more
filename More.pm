@@ -15,11 +15,11 @@ Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
-Version 2.6.0
+Version 2.7.0
 
 =cut
 
-our $VERSION = '2.6.0';
+our $VERSION = '2.7.0';
 our @EXPORT = qw(
     assert
     assert_all_keys_in
