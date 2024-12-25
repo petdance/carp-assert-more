@@ -1,5 +1,9 @@
 Revision history for Perl extension Carp::Assert::More.
 
+NEXT
+        [ENHANCEMENTS]
+        Added assert_numeric_between() and assert_integer_between().
+
 
 2.6.0   Sun Dec 22 23:37:00 CST 2024
         [ENHANCEMENTS]
