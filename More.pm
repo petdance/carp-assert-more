@@ -15,11 +15,11 @@ Carp::Assert::More - Convenience assertions for common situations
 
 =head1 VERSION
 
-Version 2.7.0
+Version 2.8.0
 
 =cut
 
-our $VERSION = '2.7.0';
+our $VERSION = '2.8.0';
 our @EXPORT = qw(
     assert
     assert_all_keys_in
@@ -1661,7 +1661,7 @@ sub _failure_msg {
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright 2005-2024 Andy Lester
+Copyright 2005-2025 Andy Lester
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the Artistic License version 2.0.
