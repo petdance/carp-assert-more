@@ -67,6 +67,7 @@ our @EXPORT = qw(
     assert_or
     assert_positive
     assert_positive_integer
+    assert_regex
     assert_undefined
     assert_unlike
     assert_xor
@@ -1157,6 +1158,27 @@ sub assert_coderef($;$) {
     my $name = shift;
 
     if ( ref($ref) eq 'CODE' || (Scalar::Util::blessed( $ref ) && $ref->isa( 'CODE' )) ) {
+        return;
+    }
+
+    require Carp;
+    &Carp::confess( _failure_msg($name) );
+}
+
+
+=head2 assert_regex( $ref [,$name] )
+
+Asserts that I<$ref> is defined, and is a reference to a regex.
+
+It is functionally the same as C<assert_isa( $ref, 'Regexp' )>.
+
+=cut
+
+sub assert_regex($;$) {
+    my $ref = shift;
+    my $name = shift;
+
+    if ( ref($ref) eq 'Regexp' ) {
         return;
     }
 
