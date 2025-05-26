@@ -1638,7 +1638,7 @@ Given this function:
     sub something {
         ...
 
-        assert_context_scalar();
+        assert_context_list();
 
         return @values;
     }
